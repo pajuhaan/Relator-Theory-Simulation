@@ -4,6 +4,9 @@
 
 A minimal static site (GitHub Pages) hosting small, focused browser simulations that make **Relator Theory** ideas visually inspectable.
 
+![img.png](_doc/img.png)
+
+
 ## What is Relator Theory
 
 Relator Theory is a two-space framework where a complex generator space
