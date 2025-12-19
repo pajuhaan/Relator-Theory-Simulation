@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Relator Epoch Update Demo · Infinite Grid</title>
+  <title>Relator Epoch Update Demo</title>
   <style>
     :root{
       --bg:#f5f5f7;
@@ -106,7 +106,6 @@
       width:100%;
       aspect-ratio: 1 / 1;
       background:#fff;
-      touch-action:none; /* required for pointer pan/drag */
     }
     canvas{
       position:absolute;
@@ -116,9 +115,7 @@
       display:block;
     }
 
-    .panel{
-      padding:14px 16px 16px;
-    }
+    .panel{ padding:14px 16px 16px; }
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -131,20 +128,10 @@
       justify-content:space-between;
       margin:10px 0;
     }
-    .row label{
-      font-size:13px;
-      color:#2a2a30;
-    }
-    .row .v{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-    }
-    input[type="range"]{
-      width:100%;
-      accent-color:#111114;
-    }
-    input[type="number"], select, input[type="color"]{
+    .row label{ font-size:13px; color:#2a2a30; }
+    .row .v{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+    input[type="range"]{ width:100%; accent-color:#111114; }
+    select, input[type="color"]{
       width:100%;
       padding:8px 10px;
       border-radius:12px;
@@ -153,117 +140,79 @@
       outline:none;
       background:#fff;
     }
-    .section{
-      margin-top:14px;
-      padding-top:14px;
-      border-top:1px solid var(--line);
-    }
-    .section .sh{
-      font-weight:650;
-      font-size:13px;
-      margin-bottom:10px;
-      letter-spacing:-.01em;
-    }
-    .small{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.45;
-    }
-    .particles{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .pCard{
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:10px;
-      background:#fff;
-    }
-    .pTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:8px;
-    }
-    .pName{
-      font-weight:650;
-      font-size:13px;
-    }
-    .pMini{
-      font-family:var(--mono);
-      font-size:12px;
-      color:var(--muted);
-    }
-    .pGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      align-items:center;
-    }
-    .toggle{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      user-select:none;
-      font-size:13px;
-      color:#2a2a30;
-    }
+    .section{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+    .section .sh{ font-weight:650; font-size:13px; margin-bottom:10px; letter-spacing:-.01em; }
+    .small{ font-size:12px; color:var(--muted); line-height:1.45; }
+    .particles{ display:flex; flex-direction:column; gap:10px; }
+    .pCard{ border:1px solid var(--line); border-radius:14px; padding:10px; background:#fff; }
+    .pTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; }
+    .pName{ font-weight:650; font-size:13px; }
+    .pMini{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+    .pGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-items:center; }
+    .toggle{ display:flex; gap:8px; align-items:center; user-select:none; font-size:13px; color:#2a2a30; }
     .toggle input{ transform: translateY(1px); }
-    .footerNote{
-      margin-top:14px;
-      font-size:12px;
-      color:var(--muted);
-      font-family:var(--mono);
-    }
 
-    footer{
+    .footer{
       max-width:1200px;
       margin:0 auto;
-      padding:0 18px 24px;
-      color:var(--muted);
+      padding:0 18px 22px;
     }
-    .footerCard{
+    .footCard{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:14px 16px;
-      font-size:12px;
-      line-height:1.55;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
-    .footerCard .k{
+    .footTitle{
+      font-weight:650;
+      letter-spacing:-.02em;
+      font-size:14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .footTitle .by{
       font-family:var(--mono);
-      color:#2a2a30;
+      font-weight:600;
+      color:var(--muted);
       font-size:12px;
-      margin-bottom:6px;
     }
-    .footerCard a{
-      color:#1a4fff;
+    .links{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:13px;
+      color:#2a2a30;
+    }
+    .links a{
+      color:#111114;
       text-decoration:none;
+      border-bottom:1px solid rgba(17,17,20,.15);
+      width:fit-content;
     }
-    .footerCard a:hover{
-      text-decoration:underline;
-    }
-    .footerGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px 14px;
-      margin-top:10px;
-    }
-    @media (max-width: 980px){
-      .footerGrid{ grid-template-columns: 1fr; }
+    .links a:hover{ border-bottom-color: rgba(17,17,20,.55); }
+    .footNote{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
     }
   </style>
 </head>
 <body>
+
   <div class="app">
+    <!-- Stage -->
     <div class="card">
       <div class="header">
         <div class="title">
           <div class="h">Epoch update simulation</div>
-          <div class="s">Three moves · no stasis · exclusion · infinite lattice · wheel zoom</div>
+          <div class="s">Three moves · no stasis · exclusion · unbounded lattice · wheel zoom</div>
         </div>
         <div class="toolbar">
           <div class="pill" id="hud">epoch 0 · 0 fps</div>
@@ -278,11 +227,12 @@
       </div>
     </div>
 
+    <!-- Controls -->
     <div class="card">
       <div class="header">
         <div class="title">
           <div class="h">Controls</div>
-          <div class="s">Single file · WebGL2 · infinite math space</div>
+          <div class="s">WebGL2 · single file · optimized for real time</div>
         </div>
         <div class="toolbar">
           <button class="btn" id="btnAdd">Add particle</button>
@@ -294,11 +244,11 @@
         <div class="grid">
           <div>
             <div class="row">
-              <label>View span</label>
-              <div class="v" id="vGrid">520</div>
+              <label>Viewport scale</label>
+              <div class="v" id="vView">520</div>
             </div>
-            <input id="gridSize" type="range" min="240" max="920" step="10" value="520" />
-            <div class="small">The visible grid is just a viewport. The simulation itself is unbounded.</div>
+            <input id="viewSize" type="range" min="240" max="1200" step="10" value="520" />
+            <div class="small">Sets the default visible world-height. Simulation space is unbounded.</div>
           </div>
 
           <div>
@@ -306,8 +256,8 @@
               <label>Dots per particle</label>
               <div class="v" id="vDots">900</div>
             </div>
-            <input id="dotsPer" type="range" min="120" max="4000" step="20" value="900" />
-            <div class="small">More dots looks smoother but costs more CPU.</div>
+            <input id="dotsPer" type="range" min="120" max="6000" step="20" value="900" />
+            <div class="small">More dots looks smoother but costs more CPU per epoch.</div>
           </div>
 
           <div>
@@ -315,8 +265,8 @@
               <label>Epoch rate</label>
               <div class="v" id="vRate">120</div>
             </div>
-            <input id="epochRate" type="range" min="10" max="800" step="10" value="120" />
-            <div class="small">Epochs per second.</div>
+            <input id="epochRate" type="range" min="10" max="1000" step="10" value="120" />
+            <div class="small">Epochs per second. Rendering runs at display refresh.</div>
           </div>
 
           <div>
@@ -324,13 +274,14 @@
               <label>Point size</label>
               <div class="v" id="vPoint">2.0</div>
             </div>
-            <input id="pointSize" type="range" min="1" max="6" step="0.5" value="2" />
+            <input id="pointSize" type="range" min="1" max="8" step="0.5" value="2" />
             <div class="small">WebGL point size in pixels.</div>
           </div>
         </div>
 
         <div class="section">
           <div class="sh">Physics toggles</div>
+
           <div class="row">
             <label class="toggle">
               <input type="checkbox" id="toggleCenters" checked />
@@ -360,58 +311,70 @@
             </label>
             <div class="v" id="vStep">step 10</div>
           </div>
-          <input id="gridStep" type="range" min="5" max="30" step="1" value="10" />
+          <input id="gridStep" type="range" min="5" max="40" step="1" value="10" />
         </div>
 
         <div class="section">
           <div class="sh">Particles</div>
           <div class="particles" id="particles"></div>
-          <div class="small">Drag a center marker to reposition · drag background to pan · mouse wheel to zoom.</div>
+          <div class="small">
+            Drag a center marker to reposition a particle. Drag the background to pan. Use the mouse wheel to zoom.
+          </div>
         </div>
 
-        <div class="footerNote">
-          Rules per epoch: three moves · no stasis · exclusion
+        <div class="section">
+          <div class="sh">Notes</div>
+          <div class="small">
+            The lattice is unbounded. Dots can move to any integer coordinate. Only the current camera viewport is rendered.
+            The update enforces no stasis and exclusion using an occupancy hash map.
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <footer>
-    <div class="footerCard">
-      <div class="k">Credits · references</div>
-      <div>© Mehrdad Pajuhaan. Please cite the related preprints:</div>
-      <div class="footerGrid">
-        <div>
-          <div><strong>Emergent Time from the Rω=c Phase Lock</strong></div>
-          <div><a href="https://doi.org/10.5281/zenodo.17977139" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
-               <a href="https://www.researchgate.net/publication/398820447_Emergent_Time_from_the_Ro_c_Phase_Lock" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
-        </div>
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footCard">
+      <div class="footTitle">
+        <div>References</div>
+        <div class="by">Credit: Mehrdad Pajuhaan</div>
+      </div>
 
+      <div class="links">
         <div>
-          <div><strong>Rω=c: Relator Theory Foundation (SR/GR/QM)</strong></div>
-          <div><a href="https://doi.org/10.5281/zenodo.16743276" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
-               <a href="https://www.researchgate.net/publication/396352084_Ro_c_Relator_Theory_Foundation_SRGR_QM" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+          Emergent Time from the Rω = c Phase Lock
+          · <a href="https://doi.org/10.5281/zenodo.17977139" target="_blank" rel="noreferrer">doi:10.5281/zenodo.17977139</a>
+          · <a href="https://www.researchgate.net/publication/398820447_Emergent_Time_from_the_Ro_c_Phase_Lock" target="_blank" rel="noreferrer">ResearchGate</a>
         </div>
-
         <div>
-          <div><strong>Alpha: Emergent The Fine-Structure Constant</strong></div>
-          <div><a href="https://doi.org/10.5281/zenodo.16944532" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
-               <a href="https://www.researchgate.net/publication/396352740_Alpha_-_Emergent_The_Fine-Structure_Constant" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+          Rω = c Relator Theory Foundation
+          · <a href="https://doi.org/10.5281/zenodo.16743276" target="_blank" rel="noreferrer">doi:10.5281/zenodo.16743276</a>
+          · <a href="https://www.researchgate.net/publication/396352084_Ro_c_Relator_Theory_Foundation_SRGR_QM" target="_blank" rel="noreferrer">ResearchGate</a>
         </div>
-
         <div>
-          <div><strong>Emergent Electron Mass from Two-Space Boundary</strong></div>
-          <div><a href="https://doi.org/10.5281/zenodo.17219278" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
-               <a href="https://www.researchgate.net/publication/396387730_Emergent_Electron_Mass_from_Two-Space_Boundary" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+          Alpha Emergent The Fine-Structure Constant
+          · <a href="https://doi.org/10.5281/zenodo.16944532" target="_blank" rel="noreferrer">doi:10.5281/zenodo.16944532</a>
+          · <a href="https://www.researchgate.net/publication/396352740_Alpha_-_Emergent_The_Fine-Structure_Constant" target="_blank" rel="noreferrer">ResearchGate</a>
+        </div>
+        <div>
+          Emergent Electron Mass from Two-Space Boundary
+          · <a href="https://doi.org/10.5281/zenodo.17219278" target="_blank" rel="noreferrer">doi:10.5281/zenodo.17219278</a>
+          · <a href="https://www.researchgate.net/publication/396387730_Emergent_Electron_Mass_from_Two-Space_Boundary" target="_blank" rel="noreferrer">ResearchGate</a>
         </div>
       </div>
+
+      <div class="footNote">
+        This page is a minimal, real-time visualization of an epoch update rule on an unbounded integer lattice.
+        It is intended as an interactive companion demo.
+      </div>
     </div>
-  </footer>
+  </div>
 
 <script>
-/* =========================
+/* =========================================================
    Utilities
-========================= */
+========================================================= */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -425,25 +388,21 @@ function rgbToHex(rgb){
   const c = rgb.map(x => clamp(Math.round(x*255),0,255).toString(16).padStart(2,"0"));
   return "#"+c.join("");
 }
-function posKey(ix, iy){
-  // Fast-enough sparse key for infinite lattice occupancy
-  return ix + "," + iy;
-}
 
-/* =========================
+/* =========================================================
    DOM
-========================= */
+========================================================= */
 const glCanvas = document.getElementById("gl");
 const uiCanvas = document.getElementById("ui");
 const stage = document.getElementById("stage");
 const hud = document.getElementById("hud");
 
-/* =========================
+/* =========================================================
    WebGL2 setup
-========================= */
+========================================================= */
 let gl = glCanvas.getContext("webgl2", { antialias:false, preserveDrawingBuffer:false });
 if(!gl){
-  alert("WebGL2 not available. Please use a modern browser.");
+  alert("WebGL2 is not available. Please use a modern browser.");
   throw new Error("WebGL2 not available");
 }
 
@@ -461,82 +420,56 @@ function resizeCanvases(){
 window.addEventListener("resize", resizeCanvases);
 resizeCanvases();
 
-/* =========================
-   Camera (infinite world -> viewport)
-   - World coordinates are on an unbounded integer lattice (simulation).
-   - The on-screen grid is just a window into that lattice.
-========================= */
-let viewSpan = 520;      // world units visible across the canvas at zoom=1
-let camZoom = 1.0;       // >1 zooms in (smaller visible span)
-let camX = 0.0;
-let camY = 0.0;
+/* =========================================================
+   Camera (unbounded world)
+   World coordinates are integer lattice cells.
+   Camera defines a rectangular viewport in world units.
+========================================================= */
+let viewH = 520;        // world units visible in height
+let camX = 0;           // world center x
+let camY = 0;           // world center y
 
-function viewSpanEffective(){
-  return viewSpan / camZoom;
+function aspect(){
+  return glCanvas.width / Math.max(1, glCanvas.height);
 }
-function viewHalfW(){
-  return 0.5 * viewSpanEffective();
+function viewW(){
+  return viewH * aspect();
 }
-function viewHalfH(){
-  const w = uiCanvas.width || 1;
-  const h = uiCanvas.height || 1;
-  return viewHalfW() * (h / w);
-}
-function screenToWorld(px, py){
-  const w = uiCanvas.width || 1;
-  const h = uiCanvas.height || 1;
-  const xN = (px / w) * 2.0 - 1.0;
-  const yN = 1.0 - (py / h) * 2.0;
-  return {
-    x: camX + xN * viewHalfW(),
-    y: camY - yN * viewHalfH(), // world y grows downward
-  };
+function worldToNDC(wx, wy){
+  const vw = viewW();
+  const nx = (wx - camX) / (vw * 0.5);
+  const ny = - (wy - camY) / (viewH * 0.5);
+  return [nx, ny];
 }
 function worldToScreen(wx, wy){
-  const w = uiCanvas.width || 1;
-  const h = uiCanvas.height || 1;
-  const xN = (wx - camX) / viewHalfW();
-  const yN = (camY - wy) / viewHalfH();
-  return {
-    x: (0.5 + 0.5 * xN) * w,
-    y: (0.5 - 0.5 * yN) * h,
-  };
+  const [nx, ny] = worldToNDC(wx, wy);
+  const sx = (nx*0.5 + 0.5) * glCanvas.width;
+  const sy = (1.0 - (ny*0.5 + 0.5)) * glCanvas.height;
+  return [sx, sy];
 }
-function fitCameraToParticles(){
-  if(particles.length === 0) return;
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for(const p of particles){
-    minX = Math.min(minX, p.cx);
-    maxX = Math.max(maxX, p.cx);
-    minY = Math.min(minY, p.cy);
-    maxY = Math.max(maxY, p.cy);
-  }
-  const cx = 0.5 * (minX + maxX);
-  const cy = 0.5 * (minY + maxY);
-
-  // Keep the pair distance + ring radius comfortably visible
-  const d = (particles.length >= 2) ? Math.hypot(particles[1].cx - particles[0].cx, particles[1].cy - particles[0].cy) : 240;
-  const r = currentRmax();
-  const spanNeed = Math.max(240, 2.4 * (d + r));
-
-  camX = cx;
-  camY = cy;
-  camZoom = clamp(viewSpan / spanNeed, 0.12, 16.0);
+function screenToWorld(sx, sy){
+  const nx = (sx / glCanvas.width) * 2.0 - 1.0;
+  const ny = -((sy / glCanvas.height) * 2.0 - 1.0);
+  const vw = viewW();
+  const wx = camX + nx * (vw * 0.5);
+  const wy = camY + ny * (viewH * 0.5);
+  return [wx, wy];
 }
 
-/* =========================
+/* =========================================================
    Shaders
-========================= */
+========================================================= */
 const MAX_P = 8;
 
 const VS = `#version 300 es
 precision highp float;
 precision highp int;
 
-in vec2 aPos;     // world position (unbounded lattice)
+in vec2 aPos;
 in float aPid;
 
-uniform vec4 uCam;             // (camX, camY, halfW, halfH)
+uniform vec2 uCam;
+uniform vec2 uView;
 uniform vec2 uCenter[${MAX_P}];
 uniform vec3 uGrad0[${MAX_P}];
 uniform vec3 uGrad1[${MAX_P}];
@@ -554,15 +487,10 @@ void main(){
   vec3 col = mix(uGrad0[pid], uGrad1[pid], t);
   vColor = vec4(col, 1.0);
 
-  float camX = uCam.x;
-  float camY = uCam.y;
-  float halfW = uCam.z;
-  float halfH = uCam.w;
+  float nx = (aPos.x - uCam.x) / (uView.x * 0.5);
+  float ny = - (aPos.y - uCam.y) / (uView.y * 0.5);
+  gl_Position = vec4(nx, ny, 0.0, 1.0);
 
-  float x = (aPos.x - camX) / halfW;
-  float y = (camY - aPos.y) / halfH; // world y grows downward
-
-  gl_Position = vec4(x, y, 0.0, 1.0);
   gl_PointSize = uPointSize;
 }
 `;
@@ -607,6 +535,7 @@ const loc = {
   aPos: gl.getAttribLocation(prog, "aPos"),
   aPid: gl.getAttribLocation(prog, "aPid"),
   uCam: gl.getUniformLocation(prog, "uCam"),
+  uView: gl.getUniformLocation(prog, "uView"),
   uRmax: gl.getUniformLocation(prog, "uRmax"),
   uPointSize: gl.getUniformLocation(prog, "uPointSize"),
   uAlpha: gl.getUniformLocation(prog, "uAlpha"),
@@ -624,32 +553,41 @@ let pidBuf = gl.createBuffer();
 gl.enable(gl.BLEND);
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-/* =========================
-   Simulation state
-========================= */
-let gridStep = 10;
+/* =========================================================
+   Simulation parameters
+========================================================= */
 let dotsPerParticle = 900;
 let epochRate = 120;
 let pointSize = 2.0;
 
-let running = true; // auto-play on load
+let running = true;      // auto-play
 let epoch = 0;
 
 let centerUpdate = true;
 let centerAlpha = 1.0;
+
 let showLinks = true;
 let linksMode = "ab";
-let showGrid = true;
 
-// Infinite lattice occupancy (sparse)
-let occMap = new Map();
+let showGrid = true;
+let gridStep = 10;
+
+// "grid size" slider becomes default view scale
+let viewDefault = 520;
+viewH = viewDefault;
 
 const ringTol = 1.25;
+const maxStepTry = 5;
 
-// Movement guarantee knobs
-const maxStepTry = 6;
-const relaxRounds = 14;
-const randomFallbackTries = 2500;
+// Unbounded occupancy
+const SHIFT = 32n;
+const MASK32 = 0xffffffffn;
+function occKey(x, y){
+  const bx = BigInt(x);
+  const by = BigInt(y);
+  // 64-bit style packing, safe for typical interactive coordinate sizes
+  return (bx << SHIFT) ^ (by & MASK32);
+}
 
 const palette = [
   {start:"#0b6623", end:"#ffd60a"}, // A dark green -> yellow
@@ -663,42 +601,44 @@ const palette = [
 let particles = [];
 let N = 0;
 
-// Store dot positions as integer lattice coords (can be negative)
-let x = null;     // Int32Array
-let y = null;     // Int32Array
-let pid = null;   // Float32Array (pid per dot for GPU + indexing)
-let rDes = null;  // Float32Array
+// Simulation arrays
+let x = null;      // Int32Array
+let y = null;      // Int32Array
+let pid = null;    // Float32Array
+let rDes = null;   // Float32Array
 
-// GPU staging buffer (reused)
-let posInter = null; // Float32Array(2N)
+let occ = null;    // Map<bigint, int>
 
-let movePhi = [], moveR = [];
+// GPU buffers
+let posInter = null; // Float32Array
 
-/* =========================
-   Dynamic distance helpers
-========================= */
-const DEFAULT_DIST = 200;
-
+/* =========================================================
+   Relator-style scales
+========================================================= */
 function currentABDistance(){
   if(particles.length >= 2){
     const a = particles[0], b = particles[1];
     return Math.hypot(b.cx - a.cx, b.cy - a.cy);
   }
-  return DEFAULT_DIST;
+  return viewDefault * 0.4;
 }
 function currentRmax(){
-  // Use the same heuristic as before, but now tied to the *visible* span (not a hard boundary).
-  return Math.min(viewSpan * 0.48, 2.0 * currentABDistance());
+  // Use a simple scale: min(viewDefault*0.48, 2*mean pair distance)
+  const base = viewDefault * 0.48;
+  const d = currentABDistance();
+  return Math.min(base, 2.0 * d);
 }
 
-/* =========================
+/* =========================================================
    Initialization
-========================= */
+========================================================= */
 function makeParticle(i){
   const pal = palette[i % palette.length];
-  const d = DEFAULT_DIST;
-  const cx = (i===0) ? -d*0.5 : (i===1) ? d*0.5 : ((i-1)*60 - 90);
-  const cy = (i===0 || i===1) ? 0 : ((i%2===0 ? -20 : 20));
+  const d = viewDefault * 0.35;
+
+  const cx = (i===0) ? -d*0.5 : (i===1) ? +d*0.5 : (i-1)*0.45*d;
+  const cy = (i%2===0) ? -0.08*d : +0.08*d;
+
   return {
     id:i,
     cx: cx,
@@ -770,12 +710,8 @@ function allocArrays(){
   pid = new Float32Array(N);
   rDes = new Float32Array(N);
 
-  posInter = new Float32Array(N*2);
-
-  occMap = new Map();
-
-  movePhi = new Int32Array(particles.length);
-  moveR = new Int32Array(particles.length);
+  occ = new Map();
+  posInter = new Float32Array(N * 2);
 }
 
 function rayleigh(sigma){
@@ -783,23 +719,28 @@ function rayleigh(sigma){
   return sigma * Math.sqrt(-2 * Math.log(u));
 }
 
+function isFree(nx, ny){
+  return !occ.has(occKey(nx, ny));
+}
+
 function placeDot(dotIndex, p){
   const maxR = currentRmax();
-  const sigma = Math.max(8, maxR / 2.4);
+  const sigma = maxR / 2.4;
 
-  for(let k=0;k<120;k++){
+  for(let k=0;k<60;k++){
     const r = Math.min(maxR, rayleigh(sigma));
     const a = Math.random() * Math.PI * 2;
     const xx = Math.round(p.cx + r*Math.cos(a));
     const yy = Math.round(p.cy + r*Math.sin(a));
-    const key = posKey(xx, yy);
-    if(occMap.has(key)) continue;
+    const key = occKey(xx, yy);
+    if(occ.has(key)) continue;
 
     x[dotIndex] = xx;
     y[dotIndex] = yy;
     pid[dotIndex] = p.id;
     rDes[dotIndex] = r;
-    occMap.set(key, dotIndex);
+
+    occ.set(key, dotIndex);
     return true;
   }
   return false;
@@ -809,23 +750,21 @@ function reseed(){
   epoch = 0;
   allocArrays();
 
-  // Seed dots, ensuring global exclusion on an infinite lattice.
   let k = 0;
   for(const p of particles){
     for(let i=0;i<dotsPerParticle;i++){
       if(!placeDot(k, p)){
-        // Rare fallback: keep trying random ring points until unique.
-        const maxR = Math.max(40, currentRmax());
-        for(let tries=0;tries<5000;tries++){
-          const a = Math.random() * Math.PI * 2;
-          const r = Math.max(1, Math.random() * maxR);
-          const xx = Math.round(p.cx + r*Math.cos(a));
-          const yy = Math.round(p.cy + r*Math.sin(a));
-          const key = posKey(xx, yy);
-          if(occMap.has(key)) continue;
-          x[k] = xx; y[k] = yy; pid[k] = p.id; rDes[k] = r;
-          occMap.set(key, k);
-          break;
+        // last resort: walk outward until you find a free cell
+        let xx = Math.round(p.cx);
+        let yy = Math.round(p.cy);
+        for(let s=1;s<2000;s++){
+          const nx = xx + s;
+          const ny = yy;
+          if(isFree(nx, ny)){
+            x[k]=nx; y[k]=ny; pid[k]=p.id; rDes[k]=0;
+            occ.set(occKey(nx, ny), k);
+            break;
+          }
         }
       }
       k++;
@@ -834,25 +773,28 @@ function reseed(){
 
   rebuildParticlesUI();
   uploadToGPU();
-
-  // Keep the camera sensible after reseed
-  fitCameraToParticles();
+  // reset camera to midpoint
+  autoCenterCamera();
 }
 
-/* =========================
+function autoCenterCamera(){
+  if(particles.length===0) return;
+  let sx = 0, sy = 0;
+  for(const p of particles){ sx += p.cx; sy += p.cy; }
+  camX = sx / particles.length;
+  camY = sy / particles.length;
+}
+
+/* =========================================================
    GPU upload
-========================= */
-function fillPosInter(){
-  for(let i=0;i<N;i++){
-    posInter[i*2]   = x[i];
-    posInter[i*2+1] = y[i];
-  }
-}
-
+========================================================= */
 function uploadToGPU(){
   gl.bindVertexArray(vao);
 
-  fillPosInter();
+  for(let i=0;i<N;i++){
+    posInter[i*2] = x[i];
+    posInter[i*2+1] = y[i];
+  }
 
   gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
   gl.bufferData(gl.ARRAY_BUFFER, posInter, gl.DYNAMIC_DRAW);
@@ -866,14 +808,17 @@ function uploadToGPU(){
 }
 
 function updatePositionsOnGPU(){
-  fillPosInter();
+  for(let i=0;i<N;i++){
+    posInter[i*2] = x[i];
+    posInter[i*2+1] = y[i];
+  }
   gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, posInter);
 }
 
-/* =========================
-   Epoch update rule (no stasis + exclusion, guaranteed movement)
-========================= */
+/* =========================================================
+   Epoch update rule (unbounded, no-stasis, exclusion)
+========================================================= */
 function domAxisStep(vx, vy){
   const ax = Math.abs(vx), ay = Math.abs(vy);
   if(ax===0 && ay===0) return [1,0];
@@ -887,18 +832,25 @@ function withinBand(nx, ny, p, r0, tol){
   return (rr >= (r0 - tol)) && (rr <= (r0 + tol));
 }
 
-function tryMoveGuaranteed(i, p){
-  const xi = x[i], yi = y[i];
-  const oldKey = posKey(xi, yi);
+function weightedPick3(w0,w1,w2){
+  const s = w0+w1+w2;
+  let r = Math.random()*s;
+  if(r < w0) return 0;
+  r -= w0;
+  if(r < w1) return 1;
+  return 2;
+}
 
-  // Remove old occupancy first (otherwise we'd block ourselves)
-  occMap.delete(oldKey);
+function moveDotGuaranteed(i, p){
+  const xi = x[i], yi = y[i];
+  const r0 = rDes[i];
 
   const dx = xi - p.cx, dy = yi - p.cy;
 
-  const f = domAxisStep(p.spin * dy, -p.spin * dx); // tangential forward (CW/CCW)
-  const rin = domAxisStep(-dx, -dy);                // radial in
-  const rout = [-rin[0], -rin[1]];                  // radial out
+  // Tangential forward in chosen chirality: rotate radial by -90 for CW, +90 for CCW
+  const f = domAxisStep(p.spin * dy, -p.spin * dx);
+  const rin = domAxisStep(-dx, -dy);
+  const rout = [-rin[0], -rin[1]];
 
   const dirs = [
     {sx:f[0],   sy:f[1],   w:1.0, type:"phi"},
@@ -906,105 +858,71 @@ function tryMoveGuaranteed(i, p){
     {sx:rout[0],sy:rout[1],w:1.0, type:"r"},
   ];
 
-  // Main search: progressively relax tol and step limits until we find a free site.
-  for(let rr=0; rr<relaxRounds; rr++){
-    const tol = ringTol * (1 + 0.40*rr);
-    const maxStep = maxStepTry + rr * 2;
+  const oldKey = occKey(xi, yi);
+  occ.delete(oldKey);
 
-    // A few randomized picks among the 3 directions to keep motion "alive"
-    for(let attempt=0; attempt<10; attempt++){
-      // weighted roulette pick among directions
-      const wsum = dirs[0].w + dirs[1].w + dirs[2].w;
-      let r = Math.random() * wsum;
-      let pick = 0;
-      if(r > dirs[0].w){ r -= dirs[0].w; pick = (r > dirs[1].w) ? 2 : 1; }
+  // Multi-stage attempt: expand step range and tolerance until a free band cell is found
+  for(let expand=0; expand<6; expand++){
+    const stepMax = Math.min(1 + expand*2, 14);
+    const tol = ringTol * (1 + 0.35*expand);
 
-      for(let s=1; s<=maxStep; s++){
-        const nx = xi + dirs[pick].sx * s;
-        const ny = yi + dirs[pick].sy * s;
+    // Try several weighted picks
+    for(let attempt=0; attempt<9; attempt++){
+      const pick = weightedPick3(dirs[0].w, dirs[1].w, dirs[2].w);
+      const d = dirs[pick];
 
-        if(!withinBand(nx, ny, p, rDes[i], tol)) continue;
+      for(let s=1; s<=stepMax; s++){
+        const nx = xi + d.sx*s;
+        const ny = yi + d.sy*s;
 
-        const key = posKey(nx, ny);
-        if(occMap.has(key)) continue;
+        if(nx === xi && ny === yi) continue; // no stasis
+        if(!withinBand(nx, ny, p, r0, tol)) continue;
 
-        // Enforce no-stasis
-        if(nx === xi && ny === yi) continue;
+        const key = occKey(nx, ny);
+        if(occ.has(key)) continue;
 
+        // accept
         x[i] = nx; y[i] = ny;
-        occMap.set(key, i);
-
-        if(dirs[pick].type === "phi") movePhi[p.id]++; else moveR[p.id]++;
-        return true;
+        occ.set(key, i);
+        return;
       }
 
-      dirs[pick].w *= 0.65;
+      // decay weight to diversify
+      dirs[pick].w *= 0.7;
     }
+  }
 
-    // Deterministic sweep (sometimes beats randomness in dense patches)
-    for(const d of dirs){
-      for(let s=1; s<=maxStep; s++){
-        const nx = xi + d.sx * s;
-        const ny = yi + d.sy * s;
-        if(!withinBand(nx, ny, p, rDes[i], tol)) continue;
-        const key = posKey(nx, ny);
-        if(occMap.has(key)) continue;
-        if(nx === xi && ny === yi) continue;
+  // Final fallback: random angle on the band, walk outward until free
+  for(let tries=0; tries<500; tries++){
+    const a = Math.random()*Math.PI*2;
+    const nx0 = Math.round(p.cx + r0*Math.cos(a));
+    const ny0 = Math.round(p.cy + r0*Math.sin(a));
+    // ensure not same as old
+    let nx = nx0, ny = ny0;
+    if(nx===xi && ny===yi) nx += 1;
 
-        x[i] = nx; y[i] = ny;
-        occMap.set(key, i);
+    // if occupied, walk along +radial direction
+    const sx = Math.sign(nx - p.cx) || 1;
+    const sy = Math.sign(ny - p.cy) || 0;
 
-        if(d.type === "phi") movePhi[p.id]++; else moveR[p.id]++;
-        return true;
+    for(let walk=0; walk<80; walk++){
+      const key = occKey(nx, ny);
+      if(!occ.has(key)){
+        x[i]=nx; y[i]=ny;
+        occ.set(key, i);
+        return;
       }
+      nx += sx;
+      ny += sy;
+      if(nx===xi && ny===yi){ nx += 1; }
     }
   }
 
-  // Random fallback: pick random candidate points on the ring-band until we find a free cell.
-  // This makes "no stasis" effectively unbreakable on an infinite lattice.
-  for(let k=0;k<randomFallbackTries;k++){
-    const tol = ringTol * 8.0;
-    const rr = rDes[i] + (Math.random()*2 - 1) * tol;
-    const ang = Math.random() * Math.PI * 2;
-    const nx = Math.round(p.cx + rr * Math.cos(ang));
-    const ny = Math.round(p.cy + rr * Math.sin(ang));
-    if(nx === xi && ny === yi) continue;
-    const key = posKey(nx, ny);
-    if(occMap.has(key)) continue;
-    x[i] = nx; y[i] = ny;
-    occMap.set(key, i);
-    moveR[p.id]++;
-    return true;
-  }
-
-  // Absolute last resort: move anywhere to guarantee "no stasis".
-  // This should be essentially unreachable on an infinite lattice, but we keep it as a hard safety net.
-  for(let step=1; step<=5000; step++){
-    // Spiral-like scan around the old position
-    const cands = [
-      [ xi + step, yi ],
-      [ xi - step, yi ],
-      [ xi, yi + step ],
-      [ xi, yi - step ],
-      [ xi + step, yi + step ],
-      [ xi + step, yi - step ],
-      [ xi - step, yi + step ],
-      [ xi - step, yi - step ],
-    ];
-    for(const [nx, ny] of cands){
-      if(nx === xi && ny === yi) continue;
-      const key = posKey(nx, ny);
-      if(occMap.has(key)) continue;
-      x[i] = nx; y[i] = ny;
-      occMap.set(key, i);
-      moveR[p.id]++;
-      return true;
-    }
-  }
-
-  // If even that fails (extremely unlikely), restore old position.
-  occMap.set(oldKey, i);
-  return false;
+  // Absolute last resort: move to a guaranteed free new key by jumping
+  const nx = xi + 100000 + ((i*13) % 97);
+  const ny = yi + 100000 + ((i*17) % 89);
+  x[i]=nx; y[i]=ny;
+  occ.set(occKey(nx, ny), i);
 }
 
 function updateCenters(){
@@ -1030,36 +948,38 @@ function updateCenters(){
 }
 
 function stepEpoch(){
-  movePhi.fill(0);
-  moveR.fill(0);
-
+  // Update order with a rotating start to avoid heavy shuffling
   const stride = 97;
   let start = (epoch * stride) % N;
 
   for(let k=0;k<N;k++){
     const i = (start + k) % N;
     const p = particles[(pid[i] + 0.5)|0];
-    tryMoveGuaranteed(i, p);
+    moveDotGuaranteed(i, p);
   }
 
   updateCenters();
   epoch++;
 }
 
-/* =========================
+/* =========================================================
    Rendering
-========================= */
+========================================================= */
 function drawGL(){
   gl.clearColor(1,1,1,1);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   gl.useProgram(prog);
 
-  gl.uniform4f(loc.uCam, camX, camY, viewHalfW(), viewHalfH());
+  const vw = viewW();
+  gl.uniform2f(loc.uCam, camX, camY);
+  gl.uniform2f(loc.uView, vw, viewH);
+
   gl.uniform1f(loc.uRmax, currentRmax());
   gl.uniform1f(loc.uPointSize, pointSize * (window.devicePixelRatio||1));
   gl.uniform1f(loc.uAlpha, 0.84);
 
+  // centers and gradients
   for(let i=0;i<MAX_P;i++){
     const p = particles[i];
     if(p){
@@ -1082,36 +1002,35 @@ function drawUI(fps){
   const w = uiCanvas.width, h = uiCanvas.height;
   ctx.clearRect(0,0,w,h);
 
-  const halfW = viewHalfW();
-  const halfH = viewHalfH();
-  const left = camX - halfW;
-  const right = camX + halfW;
-  const top = camY - halfH;
-  const bottom = camY + halfH;
-
+  // grid overlay in world coordinates (only visible region)
   if(showGrid){
+    const vw = viewW();
+    const minX = camX - vw*0.5, maxX = camX + vw*0.5;
+    const minY = camY - viewH*0.5, maxY = camY + viewH*0.5;
+
+    const step = gridStep;
+    const startX = Math.floor(minX/step)*step;
+    const startY = Math.floor(minY/step)*step;
+
     ctx.save();
     ctx.globalAlpha = 0.08;
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000";
 
-    const step = Math.max(1, gridStep);
-    const startX = Math.floor(left / step) * step;
-    const endX = Math.ceil(right / step) * step;
-    for(let gx = startX; gx <= endX; gx += step){
-      const p0 = worldToScreen(gx, camY).x;
-      ctx.beginPath(); ctx.moveTo(p0,0); ctx.lineTo(p0,h); ctx.stroke();
+    for(let gx=startX; gx<=maxX; gx+=step){
+      const [sx0, sy0] = worldToScreen(gx, minY);
+      const [sx1, sy1] = worldToScreen(gx, maxY);
+      ctx.beginPath(); ctx.moveTo(sx0, sy0); ctx.lineTo(sx1, sy1); ctx.stroke();
     }
-
-    const startY = Math.floor(top / step) * step;
-    const endY = Math.ceil(bottom / step) * step;
-    for(let gy = startY; gy <= endY; gy += step){
-      const p0 = worldToScreen(camX, gy).y;
-      ctx.beginPath(); ctx.moveTo(0,p0); ctx.lineTo(w,p0); ctx.stroke();
+    for(let gy=startY; gy<=maxY; gy+=step){
+      const [sx0, sy0] = worldToScreen(minX, gy);
+      const [sx1, sy1] = worldToScreen(maxX, gy);
+      ctx.beginPath(); ctx.moveTo(sx0, sy0); ctx.lineTo(sx1, sy1); ctx.stroke();
     }
     ctx.restore();
   }
 
+  // dashed links
   if(showLinks && particles.length>=2){
     ctx.save();
     ctx.setLineDash([8,6]);
@@ -1126,20 +1045,19 @@ function drawUI(fps){
         for(let j=i+1;j<particles.length;j++) pairs.push([i,j]);
       }
     }
-
     for(const [i,j] of pairs){
       const a = particles[i], b = particles[j];
-      const A = worldToScreen(a.cx, a.cy);
-      const B = worldToScreen(b.cx, b.cy);
-      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+      const [ax, ay] = worldToScreen(a.cx, a.cy);
+      const [bx, by] = worldToScreen(b.cx, b.cy);
+      ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
     }
     ctx.restore();
   }
 
-  // Center markers (A = circle, others = X)
+  // center markers
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
-    const P = worldToScreen(p.cx, p.cy);
+    const [px, py] = worldToScreen(p.cx, p.cy);
 
     if(i===0){
       ctx.save();
@@ -1147,7 +1065,7 @@ function drawUI(fps){
       ctx.fillStyle = "#fff";
       ctx.strokeStyle = "#000";
       ctx.beginPath();
-      ctx.arc(P.x,P.y,18,0,Math.PI*2);
+      ctx.arc(px,py,18,0,Math.PI*2);
       ctx.fill(); ctx.stroke();
       ctx.restore();
     }else{
@@ -1156,13 +1074,14 @@ function drawUI(fps){
       ctx.lineWidth = 6;
       const s = 18;
       ctx.beginPath();
-      ctx.moveTo(P.x-s,P.y-s); ctx.lineTo(P.x+s,P.y+s);
-      ctx.moveTo(P.x-s,P.y+s); ctx.lineTo(P.x+s,P.y-s);
+      ctx.moveTo(px-s,py-s); ctx.lineTo(px+s,py+s);
+      ctx.moveTo(px-s,py+s); ctx.lineTo(px+s,py-s);
       ctx.stroke();
       ctx.restore();
     }
   }
 
+  // top distance label (A-B)
   if(particles.length>=2){
     const a = particles[0], b = particles[1];
     const d = Math.hypot(b.cx - a.cx, b.cy - a.cy);
@@ -1170,20 +1089,21 @@ function drawUI(fps){
     ctx.font = "700 22px " + getComputedStyle(document.body).fontFamily;
     ctx.fillStyle = "#111114";
     ctx.textAlign = "center";
-    ctx.fillText(`d = ${d.toFixed(2)} grid units`, w*0.5, 34);
+    ctx.fillText(`d = ${d.toFixed(2)} world units`, w*0.5, 34);
     ctx.restore();
   }
 
+  // bottom-left info
   ctx.save();
   ctx.font = "650 18px " + getComputedStyle(document.body).fontFamily;
   ctx.fillStyle = "rgba(0,0,0,.85)";
-  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps   zoom ${camZoom.toFixed(2)}`, 18, h-18);
+  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps`, 18, h-18);
   ctx.restore();
 }
 
-/* =========================
+/* =========================================================
    Main loop
-========================= */
+========================================================= */
 let lastT = performance.now();
 let fpsSmooth = 60;
 let acc = 0;
@@ -1199,8 +1119,11 @@ function tick(t){
     acc += dt * epochRate;
     let steps = Math.floor(acc);
     acc -= steps;
-    steps = Math.min(18, steps);
+
+    // cap to avoid spirals
+    steps = Math.min(20, steps);
     for(let k=0;k<steps;k++) stepEpoch();
+
     updatePositionsOnGPU();
   }
 
@@ -1212,10 +1135,10 @@ function tick(t){
 }
 requestAnimationFrame(tick);
 
-/* =========================
+/* =========================================================
    Controls wiring
-========================= */
-const elGrid = document.getElementById("gridSize");
+========================================================= */
+const elView = document.getElementById("viewSize");
 const elDots = document.getElementById("dotsPer");
 const elRate = document.getElementById("epochRate");
 const elPoint = document.getElementById("pointSize");
@@ -1227,7 +1150,7 @@ const elGridToggle = document.getElementById("toggleGrid");
 const elGridStep = document.getElementById("gridStep");
 
 function syncUI(){
-  document.getElementById("vGrid").textContent = viewSpan;
+  document.getElementById("vView").textContent = viewDefault.toFixed(0);
   document.getElementById("vDots").textContent = dotsPerParticle;
   document.getElementById("vRate").textContent = epochRate;
   document.getElementById("vPoint").textContent = pointSize.toFixed(1);
@@ -1236,8 +1159,10 @@ function syncUI(){
   document.getElementById("vStep").textContent = `step ${gridStep}`;
 }
 
-elGrid.addEventListener("input", ()=>{
-  viewSpan = parseInt(elGrid.value,10);
+elView.addEventListener("input", ()=>{
+  viewDefault = parseInt(elView.value,10);
+  viewH = viewDefault;
+  reseed();
   syncUI();
 });
 elDots.addEventListener("input", ()=>{
@@ -1283,20 +1208,16 @@ document.getElementById("btnReset").addEventListener("click", ()=>{
   reseed();
 });
 document.getElementById("btnRandom").addEventListener("click", ()=>{
-  // Randomize around current camera center, so it stays visible.
-  const span = viewSpanEffective();
+  // randomize centers
   particles.forEach((p)=>{
-    p.cx = camX + (Math.random()-0.5) * span * 0.6;
-    p.cy = camY + (Math.random()-0.5) * span * 0.6;
+    p.cx += (Math.random()-0.5) * viewDefault;
+    p.cy += (Math.random()-0.5) * viewDefault;
   });
   reseed();
 });
 document.getElementById("btnAdd").addEventListener("click", ()=>{
   if(particles.length >= MAX_P) return;
   const p = makeParticle(particles.length);
-  // place new particle near camera center
-  p.cx = camX + (Math.random()-0.5) * viewSpanEffective() * 0.25;
-  p.cy = camY + (Math.random()-0.5) * viewSpanEffective() * 0.25;
   particles.push(p);
   reseed();
 });
@@ -1306,41 +1227,19 @@ document.getElementById("btnRemove").addEventListener("click", ()=>{
   reseed();
 });
 
-/* =========================
-   Mouse wheel zoom (on canvas)
-========================= */
-uiCanvas.addEventListener("wheel", (e)=>{
-  e.preventDefault();
-
-  const rect = uiCanvas.getBoundingClientRect();
-  const dpr = Math.max(1, window.devicePixelRatio||1);
-  const px = (e.clientX - rect.left) * dpr;
-  const py = (e.clientY - rect.top) * dpr;
-
-  const before = screenToWorld(px, py);
-
-  const zoomFactor = Math.exp((-e.deltaY) * 0.0016); // smooth exponential zoom
-  camZoom = clamp(camZoom * zoomFactor, 0.08, 40.0);
-
-  const after = screenToWorld(px, py);
-
-  // Keep the world point under the cursor fixed while zooming
-  camX += (before.x - after.x);
-  camY += (before.y - after.y);
-}, { passive:false });
-
-/* =========================
-   Drag centers + pan background
-========================= */
+/* =========================================================
+   Drag to pan, drag centers to move, wheel to zoom
+========================================================= */
+let dragMode = "none";   // "pan" | "center"
 let dragId = -1;
-let panning = false;
-let panStart = null;
+let panStart = null;     // {sx,sy, camX,camY}
+let centerStart = null;  // {id, dx, dy}
 
-function pickCenter(px, py){
+function pickCenter(screenX, screenY){
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
-    const s = worldToScreen(p.cx, p.cy);
-    const d = Math.hypot(px - s.x, py - s.y);
+    const [px, py] = worldToScreen(p.cx, p.cy);
+    const d = Math.hypot(screenX - px, screenY - py);
     if(d < 28) return i;
   }
   return -1;
@@ -1349,76 +1248,86 @@ function pickCenter(px, py){
 uiCanvas.addEventListener("pointerdown", (e)=>{
   const rect = uiCanvas.getBoundingClientRect();
   const dpr = Math.max(1, window.devicePixelRatio||1);
-  const px = (e.clientX - rect.left) * dpr;
-  const py = (e.clientY - rect.top) * dpr;
+  const sx = (e.clientX - rect.left) * dpr;
+  const sy = (e.clientY - rect.top) * dpr;
 
-  dragId = pickCenter(px, py);
-  if(dragId !== -1){
-    uiCanvas.setPointerCapture(e.pointerId);
-    panning = false;
-    panStart = null;
-    return;
+  const hit = pickCenter(sx, sy);
+  if(hit !== -1){
+    dragMode = "center";
+    dragId = hit;
+    const [wx, wy] = screenToWorld(sx, sy);
+    centerStart = { id: hit, dx: particles[hit].cx - wx, dy: particles[hit].cy - wy };
+  }else{
+    dragMode = "pan";
+    panStart = { sx, sy, camX, camY };
   }
 
-  // Otherwise: pan the camera
-  panning = true;
-  panStart = {
-    px, py,
-    camX0: camX,
-    camY0: camY,
-    world0: screenToWorld(px, py),
-  };
   uiCanvas.setPointerCapture(e.pointerId);
 });
 
 uiCanvas.addEventListener("pointermove", (e)=>{
+  if(dragMode === "none") return;
+
   const rect = uiCanvas.getBoundingClientRect();
   const dpr = Math.max(1, window.devicePixelRatio||1);
-  const px = (e.clientX - rect.left) * dpr;
-  const py = (e.clientY - rect.top) * dpr;
+  const sx = (e.clientX - rect.left) * dpr;
+  const sy = (e.clientY - rect.top) * dpr;
 
-  if(dragId !== -1){
-    const w = screenToWorld(px, py);
-    particles[dragId].cx = w.x;
-    particles[dragId].cy = w.y;
+  if(dragMode === "center" && centerStart){
+    const [wx, wy] = screenToWorld(sx, sy);
+    const p = particles[centerStart.id];
+    p.cx = wx + centerStart.dx;
+    p.cy = wy + centerStart.dy;
     rebuildParticlesUI();
-    return;
-  }
-
-  if(panning && panStart){
-    const wNow = screenToWorld(px, py);
-    camX = panStart.camX0 + (panStart.world0.x - wNow.x);
-    camY = panStart.camY0 + (panStart.world0.y - wNow.y);
+  }else if(dragMode === "pan" && panStart){
+    const [w0x, w0y] = screenToWorld(panStart.sx, panStart.sy);
+    const [w1x, w1y] = screenToWorld(sx, sy);
+    camX = panStart.camX + (w0x - w1x);
+    camY = panStart.camY + (w0y - w1y);
   }
 });
 
 uiCanvas.addEventListener("pointerup", ()=>{
+  dragMode = "none";
   dragId = -1;
-  panning = false;
   panStart = null;
-});
-uiCanvas.addEventListener("pointercancel", ()=>{
-  dragId = -1;
-  panning = false;
-  panStart = null;
+  centerStart = null;
 });
 
-/* =========================
-   Boot (default 2 particles + auto play)
-========================= */
+uiCanvas.addEventListener("wheel", (e)=>{
+  e.preventDefault();
+  const rect = uiCanvas.getBoundingClientRect();
+  const dpr = Math.max(1, window.devicePixelRatio||1);
+  const sx = (e.clientX - rect.left) * dpr;
+  const sy = (e.clientY - rect.top) * dpr;
+
+  const [wx0, wy0] = screenToWorld(sx, sy);
+
+  const zoomFactor = e.deltaY > 0 ? 1.10 : 0.90;
+  viewH = clamp(viewH * zoomFactor, 60, 5000);
+
+  const [wx1, wy1] = screenToWorld(sx, sy);
+
+  // keep world point under cursor fixed
+  camX += (wx0 - wx1);
+  camY += (wy0 - wy1);
+}, { passive:false });
+
+/* =========================================================
+   Boot
+========================================================= */
 function boot(){
+  // Default two particles, auto-play
   particles = [makeParticle(0), makeParticle(1)];
   particles[0].spin = +1;
   particles[1].spin = +1;
 
-  // Place the pair around origin and fit camera
-  particles[0].cx = -DEFAULT_DIST * 0.5; particles[0].cy = 0;
-  particles[1].cx =  DEFAULT_DIST * 0.5; particles[1].cy = 0;
-
-  camX = 0; camY = 0; camZoom = 1.0;
+  // Set camera to midpoint
+  autoCenterCamera();
 
   reseed();
 
+  // UI defaults
   centerUpdate = true;
   centerAlpha = parseFloat(document.getElementById("centerAlpha").value);
   showLinks = true;
