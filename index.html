@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#0b0b0c" />
+  <title>Relator Theory Simulation Lab</title>
+
+  <style>
+    :root{
+      /* Apple-ish neutrals */
+      --bg: #f5f5f7;
+      --surface: rgba(255,255,255,0.70);
+      --surface2: rgba(255,255,255,0.55);
+      --text: rgba(0,0,0,0.88);
+      --muted: rgba(0,0,0,0.58);
+      --border: rgba(0,0,0,0.10);
+
+      /* Accent (Apple blue-ish) */
+      --accent: #0a84ff;
+      --accent-soft: rgba(10,132,255,0.14);
+
+      --shadow: 0 14px 40px rgba(0,0,0,0.10);
+      --radius: 18px;
+      --radius-sm: 14px;
+      --max: 1040px;
+
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+              system-ui, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root{
+        --bg: #0b0b0c;
+        --surface: rgba(255,255,255,0.06);
+        --surface2: rgba(255,255,255,0.04);
+        --text: rgba(255,255,255,0.92);
+        --muted: rgba(255,255,255,0.62);
+        --border: rgba(255,255,255,0.10);
+
+        --accent: #0a84ff;
+        --accent-soft: rgba(10,132,255,0.18);
+
+        --shadow: 0 18px 50px rgba(0,0,0,0.55);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body{
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(10,132,255,0.10), transparent 60%),
+        radial-gradient(900px 600px at 80% 8%, rgba(64, 255, 190,0.08), transparent 55%),
+        var(--bg);
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: none; }
+
+    .wrap{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 18px 34px;
+      display: grid;
+      gap: 18px;
+      min-height: 100%;
+      grid-template-rows: auto auto 1fr auto;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(10,132,255,0.95), rgba(64,255,190,0.80));
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      flex: 0 0 auto;
+    }
+
+    .brand h1{
+      margin: 0;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand p{
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .chip{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--muted);
+      user-select:none;
+    }
+
+    .link{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      transition: transform .15s ease, background .15s ease;
+    }
+    .link:hover{
+      background: var(--surface2);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero{
+      padding: 30px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .hero-inner{
+      max-width: 76ch;
+      margin: 0 auto;
+      text-align: center;
+      display:grid;
+      gap: 12px;
+    }
+
+    .hero h2{
+      margin: 0;
+      font-size: clamp(26px, 3.6vw, 40px);
+      font-weight: 680;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+    }
+
+    .hero p{
+      margin: 0;
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .cta{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 13px;
+      color: var(--text);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      background: var(--surface2);
+      transform: translateY(-1px);
+    }
+
+    .btn.primary{
+      border-color: rgba(10,132,255,0.35);
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+    .btn.primary:hover{
+      border-color: rgba(10,132,255,0.55);
+      background: rgba(10,132,255,0.22);
+    }
+
+    /* Content grid */
+    .content{
+      display:grid;
+      gap: 18px;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items:start;
+    }
+    @media (max-width: 940px){
+      .content{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .card h3{
+      margin: 0 0 12px;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      font-weight: 650;
+      text-transform: none;
+    }
+
+    .list{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display:grid;
+      gap: 12px;
+    }
+
+    .item{
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      display:grid;
+      gap: 10px;
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .title{
+      display:flex;
+      gap: 10px;
+      align-items: baseline;
+      min-width: 0;
+    }
+
+    .emoji{ font-size: 16px; }
+    .name{
+      font-size: 14px;
+      font-weight: 680;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: transparent;
+      flex: 0 0 auto;
+    }
+
+    .desc{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .actions{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .small{
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .paper-title{
+      font-size: 13px;
+      font-weight: 680;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .paper-sub{
+      margin: 6px 0 0;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .foot{
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      display:flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .muted-mono{
+      font-family: var(--mono);
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>Relator Theory Simulation Lab</h1>
+          <p>Minimal interactive visualizations and paper links</p>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <span class="chip">Static GitHub Pages</span>
+        <a class="link" href="#simulations">Simulations</a>
+        <a class="link" href="#papers">Papers</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <h2>Intuition first, equations still respected</h2>
+        <p>
+          This repository hosts small, focused HTML simulations that make Relator Theory ideas visually inspectable.
+          Each simulation lives in its own folder and runs directly in the browser.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="./Dots-Interactions/">Open Dots Interactions</a>
+          <a class="btn" href="#papers">Browse papers</a>
+        </div>
+      </div>
+    </section>
+
+    <main class="content">
+      <section class="card" id="simulations">
+        <h3>Simulations</h3>
+        <ul class="list" id="simList" aria-label="Simulation list"></ul>
+      </section>
+
+      <section class="card" id="papers">
+        <h3>Papers</h3>
+        <ul class="list" id="paperList" aria-label="Paper list"></ul>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div>
+        Add a new simulation folder with an <span class="muted-mono">index.html</span>, then add one entry in the arrays below.
+      </div>
+      <div class="muted-mono">
+        Relator Theory Simulation Lab
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // =========================
+    // Data
+    // =========================
+
+    const SIMULATIONS = [
+      {
+        emoji: "🧪",
+        name: "Dots Interactions",
+        badge: "Emergent Time",
+        href: "./Dots-Interactions/",
+        description:
+          "A visual simulation inspired by “Emergent Time from the Rω=c Phase Lock”. Dots evolve and interact so the dynamics can be inspected directly in a C-space-like canvas.",
+        links: [
+          { label: "Open", href: "./Dots-Interactions/" },
+          { label: "Paper DOI", href: "https://doi.org/10.5281/zenodo.17977139" },
+          { label: "ResearchGate", href: "https://www.researchgate.net/publication/398820447_Emergent_Time_from_the_Ro_c_Phase_Lock" }
+        ]
+      }
+    ];
+
+    const PAPERS = [
+      {
+        title: "Rω=c",
+        subtitle: "Relator Theory Foundation SR GR QM",
+        doi: "https://doi.org/10.5281/zenodo.16743276",
+        rg: "https://www.researchgate.net/publication/396352084_Ro_c_Relator_Theory_Foundation_SRGR_QM"
+      },
+      {
+        title: "Alpha",
+        subtitle: "Emergent The Fine-Structure Constant",
+        doi: "https://doi.org/10.5281/zenodo.16944532",
+        rg: "https://www.researchgate.net/publication/396352740_Alpha_-_Emergent_The_Fine-Structure_Constant"
+      },
+      {
+        title: "Emergent Electron Mass from Two-Space Boundary",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.17219278",
+        rg: "https://www.researchgate.net/publication/396387730_Emergent_Electron_Mass_from_Two-Space_Boundary"
+      },
+      {
+        title: "Emergent Entropy from a One-Dimensional Complex Space",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.17770737",
+        rg: "https://www.researchgate.net/publication/398128650_Emergent_Entropy_from_a_One-Dimensional_Complex_Space"
+      },
+      {
+        title: "Relator Lock Rω=c and the Geometric Origin of the Heisenberg Uncertainty Bound",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.17791078",
+        rg: "https://www.researchgate.net/publication/398242217_Relator_Lock_Ro_c_and_the_Geometric_Origin_of_the_Heisenberg_Uncertainty_Bound"
+      },
+      {
+        title: "Emergent Time from the Rω=c Phase Lock",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.17977139",
+        rg: "https://www.researchgate.net/publication/398820447_Emergent_Time_from_the_Ro_c_Phase_Lock"
+      },
+      {
+        title: "Plato's Quantum Cave, Entanglement And Classical Physics",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.16778860",
+        rg: "https://www.researchgate.net/publication/396352626_Plato's_Quantum_Cave_Entanglement_And_Classical_Physics"
+      },
+      {
+        title: "Measurement as Quantum Bifurcation",
+        subtitle: "",
+        doi: "https://doi.org/10.5281/zenodo.16779902",
+        rg: "https://www.researchgate.net/publication/396352640_Measurement_as_Quantum_Bifurcation"
+      }
+    ];
+
+    // =========================
+    // Render helpers
+    // =========================
+
+    function el(tag, attrs = {}, children = []) {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v === null || v === undefined) continue;
+        if (k === "class") node.className = v;
+        else if (k === "text") node.textContent = v;
+        else node.setAttribute(k, v);
+      }
+      for (const c of children) node.appendChild(c);
+      return node;
+    }
+
+    function isExternal(url) {
+      return /^https?:\/\//i.test(url);
+    }
+
+    // =========================
+    // Render simulations
+    // =========================
+
+    const simList = document.getElementById("simList");
+
+    for (const sim of SIMULATIONS) {
+      const head = el("div", { class: "row" }, [
+        el("div", { class: "title" }, [
+          el("span", { class: "emoji", text: sim.emoji }),
+          el("span", { class: "name", text: sim.name }),
+          el("span", { class: "badge", text: sim.badge })
+        ])
+      ]);
+
+      const desc = el("p", { class: "desc", text: sim.description });
+
+      const actions = el("div", { class: "actions" },
+        sim.links.map(l => el("a", {
+          class: "btn small" + (l.label === "Open" ? " primary" : ""),
+          href: l.href,
+          target: isExternal(l.href) ? "_blank" : null,
+          rel: isExternal(l.href) ? "noopener" : null,
+          text: l.label
+        }))
+      );
+
+      simList.appendChild(el("li", { class: "item" }, [head, desc, actions]));
+    }
+
+    // =========================
+    // Render papers
+    // =========================
+
+    const paperList = document.getElementById("paperList");
+
+    for (const p of PAPERS) {
+      const head = el("div", { class: "row" }, [
+        el("div", {}, [
+          el("p", { class: "paper-title", text: p.title }),
+          ...(p.subtitle ? [el("p", { class: "paper-sub", text: p.subtitle })] : [])
+        ])
+      ]);
+
+      const actions = el("div", { class: "actions" }, [
+        el("a", { class: "btn small primary", href: p.doi, target: "_blank", rel: "noopener", text: "DOI" }),
+        el("a", { class: "btn small", href: p.rg, target: "_blank", rel: "noopener", text: "ResearchGate" })
+      ]);
+
+      paperList.appendChild(el("li", { class: "item" }, [head, actions]));
+    }
+  </script>
+</body>
+</html>
