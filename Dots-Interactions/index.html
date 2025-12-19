@@ -15,7 +15,37 @@
       --radius:18px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+      --btn-bg:#ffffff;
+      --btn-ink:#111114;
+      --btn-hover:#fafafe;
+      --btn-primary-bg:#111114;
+      --btn-primary-ink:#ffffff;
+      --pill-bg:#fafafe;
+      --link:#1a4fff;
+
+      --stage-bg: var(--card);
     }
+
+    :root[data-theme="dark"]{
+      --bg:#0b0b10;
+      --card:#12121a;
+      --ink:#f1f1f5;
+      --muted:#a0a0ad;
+      --line:#252531;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+
+      --btn-bg:#161622;
+      --btn-ink:#f1f1f5;
+      --btn-hover:#1d1d2a;
+      --btn-primary-bg:#f1f1f5;
+      --btn-primary-ink:#111114;
+      --pill-bg:#1a1a26;
+      --link:#7aa2ff;
+
+      --stage-bg:#0f0f16;
+    }
+
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
@@ -24,6 +54,7 @@
       color:var(--ink);
       background:var(--bg);
     }
+
     .app{
       max-width:1200px;
       margin:0 auto;
@@ -35,6 +66,7 @@
     @media (max-width: 980px){
       .app{ grid-template-columns: 1fr; }
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -42,6 +74,7 @@
       box-shadow:var(--shadow);
       overflow:hidden;
     }
+
     .header{
       display:flex;
       align-items:center;
@@ -50,6 +83,7 @@
       border-bottom:1px solid var(--line);
       gap:10px;
     }
+
     .title{
       display:flex;
       flex-direction:column;
@@ -65,6 +99,7 @@
       font-size:12px;
       color:var(--muted);
     }
+
     .toolbar{
       display:flex;
       gap:10px;
@@ -72,9 +107,11 @@
       flex-wrap:wrap;
       justify-content:flex-end;
     }
+
     .btn{
       border:1px solid var(--line);
-      background:#fff;
+      background:var(--btn-bg);
+      color:var(--btn-ink);
       padding:8px 10px;
       border-radius:12px;
       font-size:13px;
@@ -82,19 +119,20 @@
       transition: transform .06s ease, background .2s ease;
       user-select:none;
     }
-    .btn:hover{ background:#fafafe; }
+    .btn:hover{ background:var(--btn-hover); }
     .btn:active{ transform: translateY(1px); }
     .btn.primary{
-      background:#111114;
-      color:#fff;
-      border-color:#111114;
+      background:var(--btn-primary-bg);
+      color:var(--btn-primary-ink);
+      border-color:var(--btn-primary-bg);
     }
-    .btn.primary:hover{ background:#1b1b20; }
+    .btn.primary:hover{ filter: brightness(0.95); }
+
     .pill{
       font-family:var(--mono);
       font-size:12px;
-      color:#222;
-      background:#fafafe;
+      color:var(--btn-ink);
+      background:var(--pill-bg);
       border:1px solid var(--line);
       padding:6px 10px;
       border-radius:999px;
@@ -105,7 +143,8 @@
       position:relative;
       width:100%;
       aspect-ratio: 1 / 1;
-      background:#fff;
+      background:var(--stage-bg);
+      touch-action:none; /* required for pointer pan/drag + wheel zoom */
     }
     canvas{
       position:absolute;
@@ -116,11 +155,13 @@
     }
 
     .panel{ padding:14px 16px 16px; }
+
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
     }
+
     .row{
       display:flex;
       gap:10px;
@@ -128,28 +169,34 @@
       justify-content:space-between;
       margin:10px 0;
     }
-    .row label{ font-size:13px; color:#2a2a30; }
+    .row label{ font-size:13px; color:var(--ink); }
     .row .v{ font-family:var(--mono); font-size:12px; color:var(--muted); }
-    input[type="range"]{ width:100%; accent-color:#111114; }
-    select, input[type="color"]{
+
+    input[type="range"]{ width:100%; accent-color:var(--ink); }
+    select, input[type="color"], input[type="number"]{
       width:100%;
       padding:8px 10px;
       border-radius:12px;
       border:1px solid var(--line);
       font-size:13px;
       outline:none;
-      background:#fff;
+      background:var(--btn-bg);
+      color:var(--btn-ink);
     }
+
     .section{ margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
     .section .sh{ font-weight:650; font-size:13px; margin-bottom:10px; letter-spacing:-.01em; }
     .small{ font-size:12px; color:var(--muted); line-height:1.45; }
+
     .particles{ display:flex; flex-direction:column; gap:10px; }
-    .pCard{ border:1px solid var(--line); border-radius:14px; padding:10px; background:#fff; }
+    .pCard{ border:1px solid var(--line); border-radius:14px; padding:10px; background:var(--card); }
     .pTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; }
     .pName{ font-weight:650; font-size:13px; }
     .pMini{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+
     .pGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; align-items:center; }
-    .toggle{ display:flex; gap:8px; align-items:center; user-select:none; font-size:13px; color:#2a2a30; }
+    .pGrid3{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; align-items:end; margin-top:10px; }
+    .toggle{ display:flex; gap:8px; align-items:center; user-select:none; font-size:13px; color:var(--ink); }
     .toggle input{ transform: translateY(1px); }
 
     .footer{
@@ -183,20 +230,29 @@
       color:var(--muted);
       font-size:12px;
     }
+    .footRight{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
     .links{
       display:flex;
       flex-direction:column;
       gap:6px;
       font-size:13px;
-      color:#2a2a30;
+      color:var(--ink);
     }
     .links a{
-      color:#111114;
+      color:var(--link);
       text-decoration:none;
-      border-bottom:1px solid rgba(17,17,20,.15);
+      border-bottom:1px solid rgba(0,0,0,0);
       width:fit-content;
     }
-    .links a:hover{ border-bottom-color: rgba(17,17,20,.55); }
+    .links a:hover{ text-decoration: underline; }
+
     .footNote{
       font-size:12px;
       color:var(--muted);
@@ -254,9 +310,9 @@
           <div>
             <div class="row">
               <label>Dots per particle</label>
-              <div class="v" id="vDots">900</div>
+              <div class="v" id="vDots">5000</div>
             </div>
-            <input id="dotsPer" type="range" min="120" max="6000" step="20" value="900" />
+            <input id="dotsPer" type="range" min="120" max="15000" step="100" value="5000" />
             <div class="small">More dots looks smoother but costs more CPU per epoch.</div>
           </div>
 
@@ -325,8 +381,9 @@
         <div class="section">
           <div class="sh">Notes</div>
           <div class="small">
-            The lattice is unbounded. Dots can move to any integer coordinate. Only the current camera viewport is rendered.
-            The update enforces no stasis and exclusion using an occupancy hash map.
+            The cloud is seeded as an isotropic 2D Gaussian in (x,y), which implies a Rayleigh distribution in radius:
+            r ~ Rayleigh(σ). For each particle, σ is set by the Relator rule σ = R / √π, where R is the particle's input parameter.
+            The space is unbounded (no borders). Only the current camera viewport is rendered.
           </div>
         </div>
       </div>
@@ -338,7 +395,13 @@
     <div class="footCard">
       <div class="footTitle">
         <div>References</div>
-        <div class="by">Credit: Mehrdad Pajuhaan</div>
+        <div class="footRight">
+          <label class="toggle" title="Toggle dark mode">
+            <input type="checkbox" id="darkToggle">
+            Dark mode
+          </label>
+          <div class="by">Credit: Mehrdad Pajuhaan</div>
+        </div>
       </div>
 
       <div class="links">
@@ -388,6 +451,14 @@ function rgbToHex(rgb){
   const c = rgb.map(x => clamp(Math.round(x*255),0,255).toString(16).padStart(2,"0"));
   return "#"+c.join("");
 }
+function sigmaFromR(R){
+  // Relator rule: σ = R / √π
+  return R / Math.sqrt(Math.PI);
+}
+function occKey(ix, iy){
+  // String key = truly unbounded (no wrap / no collision)
+  return ix + "," + iy;
+}
 
 /* =========================================================
    DOM
@@ -396,6 +467,60 @@ const glCanvas = document.getElementById("gl");
 const uiCanvas = document.getElementById("ui");
 const stage = document.getElementById("stage");
 const hud = document.getElementById("hud");
+
+/* =========================================================
+   Theme (dark mode)
+========================================================= */
+const theme = {
+  isDark: true,
+  glClear: [1,1,1,1],
+  gridStroke: "rgba(0,0,0,.08)",
+  linkStroke: "rgba(0,0,0,.55)",
+  markerStroke: "#000",
+  markerFill: "#fff",
+  text: "rgba(0,0,0,.85)",
+};
+
+function applyTheme(isDark){
+  theme.isDark = !!isDark;
+  document.documentElement.dataset.theme = isDark ? "dark" : "light";
+
+  if(isDark){
+    theme.glClear = [0.06, 0.06, 0.09, 1];
+    theme.gridStroke = "rgba(241,241,245,.10)";
+    theme.linkStroke = "rgba(241,241,245,.55)";
+    theme.markerStroke = "rgba(241,241,245,.90)";
+    theme.markerFill = "rgba(15,15,22,.95)";
+    theme.text = "rgba(241,241,245,.92)";
+  }else{
+    theme.glClear = [1, 1, 1, 1];
+    theme.gridStroke = "rgba(0,0,0,.08)";
+    theme.linkStroke = "rgba(0,0,0,.55)";
+    theme.markerStroke = "#000";
+    theme.markerFill = "#fff";
+    theme.text = "rgba(0,0,0,.85)";
+  }
+
+  const t = document.getElementById("darkToggle");
+  if(t) t.checked = isDark;
+
+  try{ localStorage.setItem("relatorTheme", isDark ? "dark" : "light"); }catch(_){}
+}
+
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem("relatorTheme"); }catch(_){}
+  if(saved === "dark") applyTheme(true);
+  else if(saved === "light") applyTheme(false);
+  else{
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark);
+  }
+})();
+
+document.getElementById("darkToggle").addEventListener("change", (e)=>{
+  applyTheme(e.target.checked);
+});
 
 /* =========================================================
    WebGL2 setup
@@ -422,8 +547,6 @@ resizeCanvases();
 
 /* =========================================================
    Camera (unbounded world)
-   World coordinates are integer lattice cells.
-   Camera defines a rectangular viewport in world units.
 ========================================================= */
 let viewH = 520;        // world units visible in height
 let camX = 0;           // world center x
@@ -473,7 +596,7 @@ uniform vec2 uView;
 uniform vec2 uCenter[${MAX_P}];
 uniform vec3 uGrad0[${MAX_P}];
 uniform vec3 uGrad1[${MAX_P}];
-uniform float uRmax;
+uniform float uR[${MAX_P}];
 uniform float uPointSize;
 
 out vec4 vColor;
@@ -482,7 +605,9 @@ void main(){
   int pid = int(aPid + 0.5);
   vec2 c = uCenter[pid];
   float r = length(aPos - c);
-  float t = clamp(r / uRmax, 0.0, 1.0);
+
+  float R = max(1e-6, uR[pid]);
+  float t = clamp(r / R, 0.0, 1.0);
 
   vec3 col = mix(uGrad0[pid], uGrad1[pid], t);
   vColor = vec4(col, 1.0);
@@ -536,12 +661,12 @@ const loc = {
   aPid: gl.getAttribLocation(prog, "aPid"),
   uCam: gl.getUniformLocation(prog, "uCam"),
   uView: gl.getUniformLocation(prog, "uView"),
-  uRmax: gl.getUniformLocation(prog, "uRmax"),
   uPointSize: gl.getUniformLocation(prog, "uPointSize"),
   uAlpha: gl.getUniformLocation(prog, "uAlpha"),
   uCenter: [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uCenter[${i}]`)),
-  uGrad0: [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uGrad0[${i}]`)),
-  uGrad1: [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uGrad1[${i}]`)),
+  uGrad0:  [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uGrad0[${i}]`)),
+  uGrad1:  [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uGrad1[${i}]`)),
+  uR:      [...Array(MAX_P)].map((_,i)=>gl.getUniformLocation(prog, `uR[${i}]`)),
 };
 
 const vao = gl.createVertexArray();
@@ -556,42 +681,34 @@ gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 /* =========================================================
    Simulation parameters
 ========================================================= */
-let dotsPerParticle = 900;
+let dotsPerParticle = 5000;
 let epochRate = 120;
 let pointSize = 2.0;
 
-let running = true;      // auto-play
+let running = true;
 let epoch = 0;
 
 let centerUpdate = true;
 let centerAlpha = 1.0;
 
 let showLinks = true;
-let linksMode = "ab";
+let linksMode = "all";
 
 let showGrid = true;
 let gridStep = 10;
 
-// "grid size" slider becomes default view scale
 let viewDefault = 520;
 viewH = viewDefault;
 
+let occ = new Map(); // Map<string,int>
 const ringTol = 1.25;
-const maxStepTry = 5;
 
-// Unbounded occupancy
-const SHIFT = 32n;
-const MASK32 = 0xffffffffn;
-function occKey(x, y){
-  const bx = BigInt(x);
-  const by = BigInt(y);
-  // 64-bit style packing, safe for typical interactive coordinate sizes
-  return (bx << SHIFT) ^ (by & MASK32);
-}
-
+/* =========================================================
+   Particles
+========================================================= */
 const palette = [
-  {start:"#0b6623", end:"#ffd60a"}, // A dark green -> yellow
-  {start:"#2d004b", end:"#d7301f"}, // B dark purple -> red
+  {start:"#0b6623", end:"#ffd60a"},
+  {start:"#2d004b", end:"#d7301f"},
   {start:"#062a5e", end:"#55c3ff"},
   {start:"#3b0a45", end:"#ff7ad9"},
   {start:"#202124", end:"#9aa0a6"},
@@ -601,33 +718,12 @@ const palette = [
 let particles = [];
 let N = 0;
 
-// Simulation arrays
 let x = null;      // Int32Array
 let y = null;      // Int32Array
 let pid = null;    // Float32Array
 let rDes = null;   // Float32Array
 
-let occ = null;    // Map<bigint, int>
-
-// GPU buffers
 let posInter = null; // Float32Array
-
-/* =========================================================
-   Relator-style scales
-========================================================= */
-function currentABDistance(){
-  if(particles.length >= 2){
-    const a = particles[0], b = particles[1];
-    return Math.hypot(b.cx - a.cx, b.cy - a.cy);
-  }
-  return viewDefault * 0.4;
-}
-function currentRmax(){
-  // Use a simple scale: min(viewDefault*0.48, 2*mean pair distance)
-  const base = viewDefault * 0.48;
-  const d = currentABDistance();
-  return Math.min(base, 2.0 * d);
-}
 
 /* =========================================================
    Initialization
@@ -639,14 +735,17 @@ function makeParticle(i){
   const cx = (i===0) ? -d*0.5 : (i===1) ? +d*0.5 : (i-1)*0.45*d;
   const cy = (i%2===0) ? -0.08*d : +0.08*d;
 
+  const R = Math.max(40, d);
+
   return {
     id:i,
     cx: cx,
     cy: cy,
-    spin: +1, // CW default
+    spin: +1,
+    R: R,
     grad0: hexToRgb(pal.start),
     grad1: hexToRgb(pal.end),
-    name: String.fromCharCode(65+i)
+    name: String.fromCharCode(65+i),
   };
 }
 
@@ -654,20 +753,26 @@ function rebuildParticlesUI(){
   const root = document.getElementById("particles");
   root.innerHTML = "";
   particles.forEach((p, i)=>{
+    const sig = sigmaFromR(p.R);
     const el = document.createElement("div");
     el.className = "pCard";
     el.innerHTML = `
       <div class="pTop">
         <div>
           <div class="pName">Particle ${p.name}</div>
-          <div class="pMini">spin ${p.spin===1?"CW":"CCW"} · center (${p.cx.toFixed(1)}, ${p.cy.toFixed(1)})</div>
+          <div class="pMini">spin ${p.spin===1?"CW":"CCW"} · R ${p.R.toFixed(2)} · σ ${sig.toFixed(2)} · center (${p.cx.toFixed(1)}, ${p.cy.toFixed(1)})</div>
         </div>
         <label class="toggle">
           <input type="checkbox" ${p.spin===1?"checked":""} data-spin="${i}">
           CW
         </label>
       </div>
-      <div class="pGrid">
+
+      <div class="pGrid3">
+        <div>
+          <label class="small">R (Relator)</label>
+          <input type="number" min="1" step="10" value="${p.R.toFixed(2)}" data-r="${i}">
+        </div>
         <div>
           <label class="small">Gradient start</label>
           <input type="color" value="${rgbToHex(p.grad0)}" data-c0="${i}">
@@ -683,20 +788,32 @@ function rebuildParticlesUI(){
 
   root.querySelectorAll('input[data-spin]').forEach(inp=>{
     inp.addEventListener("change", (e)=>{
-      const idx = parseInt(e.target.getAttribute("data-spin"));
+      const idx = parseInt(e.target.getAttribute("data-spin"), 10);
       particles[idx].spin = e.target.checked ? +1 : -1;
       rebuildParticlesUI();
     });
   });
+
+  root.querySelectorAll('input[data-r]').forEach(inp=>{
+    inp.addEventListener("change", (e)=>{
+      const idx = parseInt(e.target.getAttribute("data-r"), 10);
+      const v = parseFloat(e.target.value);
+      if(!Number.isFinite(v) || v <= 0) return;
+      particles[idx].R = Math.max(1e-6, v);
+      reseed({recenter:false});
+    });
+  });
+
   root.querySelectorAll('input[data-c0]').forEach(inp=>{
     inp.addEventListener("input", (e)=>{
-      const idx = parseInt(e.target.getAttribute("data-c0"));
+      const idx = parseInt(e.target.getAttribute("data-c0"), 10);
       particles[idx].grad0 = hexToRgb(e.target.value);
     });
   });
+
   root.querySelectorAll('input[data-c1]').forEach(inp=>{
     inp.addEventListener("input", (e)=>{
-      const idx = parseInt(e.target.getAttribute("data-c1"));
+      const idx = parseInt(e.target.getAttribute("data-c1"), 10);
       particles[idx].grad1 = hexToRgb(e.target.value);
     });
   });
@@ -719,19 +836,20 @@ function rayleigh(sigma){
   return sigma * Math.sqrt(-2 * Math.log(u));
 }
 
-function isFree(nx, ny){
-  return !occ.has(occKey(nx, ny));
+function isFree(ix, iy){
+  return !occ.has(occKey(ix, iy));
 }
 
 function placeDot(dotIndex, p){
-  const maxR = currentRmax();
-  const sigma = maxR / 2.4;
+  const sigma = sigmaFromR(p.R);
 
-  for(let k=0;k<60;k++){
-    const r = Math.min(maxR, rayleigh(sigma));
+  for(let k=0;k<200;k++){
+    const r = rayleigh(sigma);
     const a = Math.random() * Math.PI * 2;
-    const xx = Math.round(p.cx + r*Math.cos(a));
-    const yy = Math.round(p.cy + r*Math.sin(a));
+
+    const xx = Math.round(p.cx + r * Math.cos(a));
+    const yy = Math.round(p.cy + r * Math.sin(a));
+
     const key = occKey(xx, yy);
     if(occ.has(key)) continue;
 
@@ -746,7 +864,34 @@ function placeDot(dotIndex, p){
   return false;
 }
 
-function reseed(){
+function logDistributionStats(){
+  const meanFactor = Math.sqrt(Math.PI/2);
+  const sum = new Float64Array(particles.length);
+  const cnt = new Int32Array(particles.length);
+
+  for(let i=0;i<N;i++){
+    const id = (pid[i] + 0.5)|0;
+    sum[id] += rDes[i];
+    cnt[id] += 1;
+  }
+
+  const rows = particles.map(p=>{
+    const sig = sigmaFromR(p.R);
+    const muTheory = sig * meanFactor;
+    const muEmp = cnt[p.id] ? sum[p.id]/cnt[p.id] : 0;
+    return {
+      particle: p.name,
+      R: p.R,
+      sigma: sig,
+      mean_r_empirical: muEmp,
+      mean_r_theory: muTheory,
+      ratio_emp_over_theory: muTheory > 0 ? (muEmp/muTheory) : 0,
+    };
+  });
+  console.table(rows);
+}
+
+function reseed({recenter=false} = {}){
   epoch = 0;
   allocArrays();
 
@@ -754,16 +899,31 @@ function reseed(){
   for(const p of particles){
     for(let i=0;i<dotsPerParticle;i++){
       if(!placeDot(k, p)){
-        // last resort: walk outward until you find a free cell
-        let xx = Math.round(p.cx);
-        let yy = Math.round(p.cy);
-        for(let s=1;s<2000;s++){
-          const nx = xx + s;
-          const ny = yy;
-          if(isFree(nx, ny)){
-            x[k]=nx; y[k]=ny; pid[k]=p.id; rDes[k]=0;
-            occ.set(occKey(nx, ny), k);
-            break;
+        const baseX = Math.round(p.cx);
+        const baseY = Math.round(p.cy);
+        let found = false;
+
+        for(let step=1; step<20000 && !found; step++){
+          const candidates = [
+            [ baseX + step, baseY ],
+            [ baseX - step, baseY ],
+            [ baseX, baseY + step ],
+            [ baseX, baseY - step ],
+            [ baseX + step, baseY + step ],
+            [ baseX + step, baseY - step ],
+            [ baseX - step, baseY + step ],
+            [ baseX - step, baseY - step ],
+          ];
+          for(const [ix, iy] of candidates){
+            if(isFree(ix, iy)){
+              x[k] = ix;
+              y[k] = iy;
+              pid[k] = p.id;
+              rDes[k] = Math.hypot(ix - p.cx, iy - p.cy);
+              occ.set(occKey(ix, iy), k);
+              found = true;
+              break;
+            }
           }
         }
       }
@@ -773,8 +933,12 @@ function reseed(){
 
   rebuildParticlesUI();
   uploadToGPU();
-  // reset camera to midpoint
-  autoCenterCamera();
+
+  if(recenter){
+    autoCenterCamera();
+  }
+
+  logDistributionStats();
 }
 
 function autoCenterCamera(){
@@ -847,26 +1011,23 @@ function moveDotGuaranteed(i, p){
 
   const dx = xi - p.cx, dy = yi - p.cy;
 
-  // Tangential forward in chosen chirality: rotate radial by -90 for CW, +90 for CCW
   const f = domAxisStep(p.spin * dy, -p.spin * dx);
   const rin = domAxisStep(-dx, -dy);
   const rout = [-rin[0], -rin[1]];
 
   const dirs = [
-    {sx:f[0],   sy:f[1],   w:1.0, type:"phi"},
-    {sx:rin[0], sy:rin[1], w:1.0, type:"r"},
-    {sx:rout[0],sy:rout[1],w:1.0, type:"r"},
+    {sx:f[0],   sy:f[1],   w:1.0},
+    {sx:rin[0], sy:rin[1], w:1.0},
+    {sx:rout[0],sy:rout[1],w:1.0},
   ];
 
   const oldKey = occKey(xi, yi);
   occ.delete(oldKey);
 
-  // Multi-stage attempt: expand step range and tolerance until a free band cell is found
-  for(let expand=0; expand<6; expand++){
-    const stepMax = Math.min(1 + expand*2, 14);
+  for(let expand=0; expand<7; expand++){
+    const stepMax = Math.min(1 + expand*2, 18);
     const tol = ringTol * (1 + 0.35*expand);
 
-    // Try several weighted picks
     for(let attempt=0; attempt<9; attempt++){
       const pick = weightedPick3(dirs[0].w, dirs[1].w, dirs[2].w);
       const d = dirs[pick];
@@ -875,37 +1036,33 @@ function moveDotGuaranteed(i, p){
         const nx = xi + d.sx*s;
         const ny = yi + d.sy*s;
 
-        if(nx === xi && ny === yi) continue; // no stasis
+        if(nx === xi && ny === yi) continue;
         if(!withinBand(nx, ny, p, r0, tol)) continue;
 
         const key = occKey(nx, ny);
         if(occ.has(key)) continue;
 
-        // accept
         x[i] = nx; y[i] = ny;
         occ.set(key, i);
         return;
       }
 
-      // decay weight to diversify
       dirs[pick].w *= 0.7;
     }
   }
 
-  // Final fallback: random angle on the band, walk outward until free
-  for(let tries=0; tries<500; tries++){
+  for(let tries=0; tries<800; tries++){
     const a = Math.random()*Math.PI*2;
     const nx0 = Math.round(p.cx + r0*Math.cos(a));
     const ny0 = Math.round(p.cy + r0*Math.sin(a));
-    // ensure not same as old
+
     let nx = nx0, ny = ny0;
     if(nx===xi && ny===yi) nx += 1;
 
-    // if occupied, walk along +radial direction
     const sx = Math.sign(nx - p.cx) || 1;
     const sy = Math.sign(ny - p.cy) || 0;
 
-    for(let walk=0; walk<80; walk++){
+    for(let walk=0; walk<120; walk++){
       const key = occKey(nx, ny);
       if(!occ.has(key)){
         x[i]=nx; y[i]=ny;
@@ -918,7 +1075,6 @@ function moveDotGuaranteed(i, p){
     }
   }
 
-  // Absolute last resort: move to a guaranteed free new key by jumping
   const nx = xi + 100000 + ((i*13) % 97);
   const ny = yi + 100000 + ((i*17) % 89);
   x[i]=nx; y[i]=ny;
@@ -948,7 +1104,6 @@ function updateCenters(){
 }
 
 function stepEpoch(){
-  // Update order with a rotating start to avoid heavy shuffling
   const stride = 97;
   let start = (epoch * stride) % N;
 
@@ -966,7 +1121,7 @@ function stepEpoch(){
    Rendering
 ========================================================= */
 function drawGL(){
-  gl.clearColor(1,1,1,1);
+  gl.clearColor(theme.glClear[0], theme.glClear[1], theme.glClear[2], theme.glClear[3]);
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   gl.useProgram(prog);
@@ -975,21 +1130,21 @@ function drawGL(){
   gl.uniform2f(loc.uCam, camX, camY);
   gl.uniform2f(loc.uView, vw, viewH);
 
-  gl.uniform1f(loc.uRmax, currentRmax());
   gl.uniform1f(loc.uPointSize, pointSize * (window.devicePixelRatio||1));
   gl.uniform1f(loc.uAlpha, 0.84);
 
-  // centers and gradients
   for(let i=0;i<MAX_P;i++){
     const p = particles[i];
     if(p){
       gl.uniform2f(loc.uCenter[i], p.cx, p.cy);
       gl.uniform3f(loc.uGrad0[i], p.grad0[0], p.grad0[1], p.grad0[2]);
       gl.uniform3f(loc.uGrad1[i], p.grad1[0], p.grad1[1], p.grad1[2]);
+      gl.uniform1f(loc.uR[i], Math.max(1e-6, p.R));
     }else{
       gl.uniform2f(loc.uCenter[i], 0, 0);
       gl.uniform3f(loc.uGrad0[i], 0, 0, 0);
       gl.uniform3f(loc.uGrad1[i], 0, 0, 0);
+      gl.uniform1f(loc.uR[i], 1);
     }
   }
 
@@ -1002,7 +1157,6 @@ function drawUI(fps){
   const w = uiCanvas.width, h = uiCanvas.height;
   ctx.clearRect(0,0,w,h);
 
-  // grid overlay in world coordinates (only visible region)
   if(showGrid){
     const vw = viewW();
     const minX = camX - vw*0.5, maxX = camX + vw*0.5;
@@ -1013,9 +1167,8 @@ function drawUI(fps){
     const startY = Math.floor(minY/step)*step;
 
     ctx.save();
-    ctx.globalAlpha = 0.08;
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#000";
+    ctx.strokeStyle = theme.gridStroke;
 
     for(let gx=startX; gx<=maxX; gx+=step){
       const [sx0, sy0] = worldToScreen(gx, minY);
@@ -1030,12 +1183,11 @@ function drawUI(fps){
     ctx.restore();
   }
 
-  // dashed links
   if(showLinks && particles.length>=2){
     ctx.save();
     ctx.setLineDash([8,6]);
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "rgba(0,0,0,.55)";
+    ctx.strokeStyle = theme.linkStroke;
 
     const pairs = [];
     if(linksMode==="ab"){
@@ -1054,7 +1206,6 @@ function drawUI(fps){
     ctx.restore();
   }
 
-  // center markers
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
     const [px, py] = worldToScreen(p.cx, p.cy);
@@ -1062,15 +1213,15 @@ function drawUI(fps){
     if(i===0){
       ctx.save();
       ctx.lineWidth = 6;
-      ctx.fillStyle = "#fff";
-      ctx.strokeStyle = "#000";
+      ctx.fillStyle = theme.markerFill;
+      ctx.strokeStyle = theme.markerStroke;
       ctx.beginPath();
       ctx.arc(px,py,18,0,Math.PI*2);
       ctx.fill(); ctx.stroke();
       ctx.restore();
     }else{
       ctx.save();
-      ctx.strokeStyle = "#000";
+      ctx.strokeStyle = theme.markerStroke;
       ctx.lineWidth = 6;
       const s = 18;
       ctx.beginPath();
@@ -1081,23 +1232,28 @@ function drawUI(fps){
     }
   }
 
-  // top distance label (A-B)
   if(particles.length>=2){
     const a = particles[0], b = particles[1];
     const d = Math.hypot(b.cx - a.cx, b.cy - a.cy);
+    const sigA = sigmaFromR(a.R);
+    const sigB = sigmaFromR(b.R);
+
     ctx.save();
     ctx.font = "700 22px " + getComputedStyle(document.body).fontFamily;
-    ctx.fillStyle = "#111114";
+    ctx.fillStyle = theme.text;
     ctx.textAlign = "center";
     ctx.fillText(`d = ${d.toFixed(2)} world units`, w*0.5, 34);
+
+    ctx.font = "650 14px " + getComputedStyle(document.body).fontFamily;
+    ctx.fillStyle = theme.isDark ? "rgba(241,241,245,.78)" : "rgba(0,0,0,.60)";
+    ctx.fillText(`A: R=${a.R.toFixed(1)}, σ=${sigA.toFixed(1)} · B: R=${b.R.toFixed(1)}, σ=${sigB.toFixed(1)}`, w*0.5, 56);
     ctx.restore();
   }
 
-  // bottom-left info
   ctx.save();
   ctx.font = "650 18px " + getComputedStyle(document.body).fontFamily;
-  ctx.fillStyle = "rgba(0,0,0,.85)";
-  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps`, 18, h-18);
+  ctx.fillStyle = theme.text;
+  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps   viewH ${viewH.toFixed(0)}`, 18, h-18);
   ctx.restore();
 }
 
@@ -1120,7 +1276,6 @@ function tick(t){
     let steps = Math.floor(acc);
     acc -= steps;
 
-    // cap to avoid spirals
     steps = Math.min(20, steps);
     for(let k=0;k<steps;k++) stepEpoch();
 
@@ -1162,12 +1317,12 @@ function syncUI(){
 elView.addEventListener("input", ()=>{
   viewDefault = parseInt(elView.value,10);
   viewH = viewDefault;
-  reseed();
+  reseed({recenter:false});
   syncUI();
 });
 elDots.addEventListener("input", ()=>{
   dotsPerParticle = parseInt(elDots.value,10);
-  reseed();
+  reseed({recenter:false});
   syncUI();
 });
 elRate.addEventListener("input", ()=>{
@@ -1205,35 +1360,36 @@ document.getElementById("btnPlay").addEventListener("click", ()=>{
   document.getElementById("btnPlay").textContent = running ? "Pause" : "Play";
 });
 document.getElementById("btnReset").addEventListener("click", ()=>{
-  reseed();
+  reseed({recenter:true});
 });
 document.getElementById("btnRandom").addEventListener("click", ()=>{
-  // randomize centers
   particles.forEach((p)=>{
-    p.cx += (Math.random()-0.5) * viewDefault;
-    p.cy += (Math.random()-0.5) * viewDefault;
+    p.cx = camX + (Math.random()-0.5) * viewDefault * 0.9;
+    p.cy = camY + (Math.random()-0.5) * viewDefault * 0.9;
   });
-  reseed();
+  rebuildParticlesUI();
+  reseed({recenter:false});
 });
 document.getElementById("btnAdd").addEventListener("click", ()=>{
   if(particles.length >= MAX_P) return;
   const p = makeParticle(particles.length);
+  p.cx = camX + (Math.random()-0.5) * viewDefault * 0.35;
+  p.cy = camY + (Math.random()-0.5) * viewDefault * 0.35;
   particles.push(p);
-  reseed();
+  reseed({recenter:false});
 });
 document.getElementById("btnRemove").addEventListener("click", ()=>{
   if(particles.length <= 1) return;
   particles.pop();
-  reseed();
+  reseed({recenter:false});
 });
 
 /* =========================================================
    Drag to pan, drag centers to move, wheel to zoom
 ========================================================= */
-let dragMode = "none";   // "pan" | "center"
-let dragId = -1;
-let panStart = null;     // {sx,sy, camX,camY}
-let centerStart = null;  // {id, dx, dy}
+let dragMode = "none";
+let panStart = null;
+let centerStart = null;
 
 function pickCenter(screenX, screenY){
   for(let i=0;i<particles.length;i++){
@@ -1254,7 +1410,6 @@ uiCanvas.addEventListener("pointerdown", (e)=>{
   const hit = pickCenter(sx, sy);
   if(hit !== -1){
     dragMode = "center";
-    dragId = hit;
     const [wx, wy] = screenToWorld(sx, sy);
     centerStart = { id: hit, dx: particles[hit].cx - wx, dy: particles[hit].cy - wy };
   }else{
@@ -1289,7 +1444,11 @@ uiCanvas.addEventListener("pointermove", (e)=>{
 
 uiCanvas.addEventListener("pointerup", ()=>{
   dragMode = "none";
-  dragId = -1;
+  panStart = null;
+  centerStart = null;
+});
+uiCanvas.addEventListener("pointercancel", ()=>{
+  dragMode = "none";
   panStart = null;
   centerStart = null;
 });
@@ -1304,11 +1463,10 @@ uiCanvas.addEventListener("wheel", (e)=>{
   const [wx0, wy0] = screenToWorld(sx, sy);
 
   const zoomFactor = e.deltaY > 0 ? 1.10 : 0.90;
-  viewH = clamp(viewH * zoomFactor, 60, 5000);
+  viewH = clamp(viewH * zoomFactor, 60, 50000);
 
   const [wx1, wy1] = screenToWorld(sx, sy);
 
-  // keep world point under cursor fixed
   camX += (wx0 - wx1);
   camY += (wy0 - wy1);
 }, { passive:false });
@@ -1317,17 +1475,13 @@ uiCanvas.addEventListener("wheel", (e)=>{
    Boot
 ========================================================= */
 function boot(){
-  // Default two particles, auto-play
   particles = [makeParticle(0), makeParticle(1)];
   particles[0].spin = +1;
   particles[1].spin = +1;
 
-  // Set camera to midpoint
   autoCenterCamera();
+  reseed({recenter:false});
 
-  reseed();
-
-  // UI defaults
   centerUpdate = true;
   centerAlpha = parseFloat(document.getElementById("centerAlpha").value);
   showLinks = true;
