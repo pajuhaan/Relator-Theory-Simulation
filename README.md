@@ -7,16 +7,11 @@ A minimal static site (GitHub Pages) hosting small, focused browser simulations 
 ## What is Relator Theory
 
 Relator Theory is a two-space framework where a complex generator space
-
-$$\mathbb{C}$$
-
+$\mathbb{C}$
 and a real projection space
-
-$$\mathbb{R}^3$$
-
+$\mathbb{R}^3$
 are linked by a fundamental phase constraint (the “lock”)
-
-$$R\omega=c$$
+$R\omega=c$
 
 In this view, physical relations and bounds are treated as *emergent* consequences of geometry and phase consistency. This repository focuses on practical intuition: interactive simulations that complement the papers.
 
