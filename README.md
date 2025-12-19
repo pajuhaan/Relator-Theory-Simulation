@@ -1,6 +1,8 @@
 # Relator Theory Simulation Lab
 
-**Live:** https://pajuhaan.github.io/Relator-Theory-Simulation/
+**Live:** https://pajuhaan.github.io/Relator-Theory-Simulation
+
+**Github:** https://github.com/pajuhaan/Relator-Theory-Simulation
 
 A minimal static site (GitHub Pages) hosting small, focused browser simulations that make **Relator Theory** ideas visually inspectable.
 
