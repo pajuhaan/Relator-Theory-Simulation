@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Relator Epoch Update Demo</title>
+  <title>Relator Epoch Update Demo · Infinite Grid</title>
   <style>
     :root{
       --bg:#f5f5f7;
@@ -27,7 +27,7 @@
     .app{
       max-width:1200px;
       margin:0 auto;
-      padding:18px 18px 28px;
+      padding:18px 18px 18px;
       display:grid;
       grid-template-columns: 1.2fr .8fr;
       gap:16px;
@@ -106,6 +106,7 @@
       width:100%;
       aspect-ratio: 1 / 1;
       background:#fff;
+      touch-action:none; /* required for pointer pan/drag */
     }
     canvas{
       position:absolute;
@@ -216,6 +217,44 @@
       color:var(--muted);
       font-family:var(--mono);
     }
+
+    footer{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 18px 24px;
+      color:var(--muted);
+    }
+    .footerCard{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+      font-size:12px;
+      line-height:1.55;
+    }
+    .footerCard .k{
+      font-family:var(--mono);
+      color:#2a2a30;
+      font-size:12px;
+      margin-bottom:6px;
+    }
+    .footerCard a{
+      color:#1a4fff;
+      text-decoration:none;
+    }
+    .footerCard a:hover{
+      text-decoration:underline;
+    }
+    .footerGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px 14px;
+      margin-top:10px;
+    }
+    @media (max-width: 980px){
+      .footerGrid{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -224,7 +263,7 @@
       <div class="header">
         <div class="title">
           <div class="h">Epoch update simulation</div>
-          <div class="s">Three moves · no stasis · exclusion · gradient dots</div>
+          <div class="s">Three moves · no stasis · exclusion · infinite lattice · wheel zoom</div>
         </div>
         <div class="toolbar">
           <div class="pill" id="hud">epoch 0 · 0 fps</div>
@@ -243,7 +282,7 @@
       <div class="header">
         <div class="title">
           <div class="h">Controls</div>
-          <div class="s">Single file · WebGL2 · real time</div>
+          <div class="s">Single file · WebGL2 · infinite math space</div>
         </div>
         <div class="toolbar">
           <button class="btn" id="btnAdd">Add particle</button>
@@ -255,11 +294,11 @@
         <div class="grid">
           <div>
             <div class="row">
-              <label>Grid size</label>
+              <label>View span</label>
               <div class="v" id="vGrid">520</div>
             </div>
             <input id="gridSize" type="range" min="240" max="920" step="10" value="520" />
-            <div class="small">Discrete lattice. Larger grid allows larger rings.</div>
+            <div class="small">The visible grid is just a viewport. The simulation itself is unbounded.</div>
           </div>
 
           <div>
@@ -327,7 +366,7 @@
         <div class="section">
           <div class="sh">Particles</div>
           <div class="particles" id="particles"></div>
-          <div class="small">Drag a center marker to reposition. Reset to re-seed dots.</div>
+          <div class="small">Drag a center marker to reposition · drag background to pan · mouse wheel to zoom.</div>
         </div>
 
         <div class="footerNote">
@@ -336,6 +375,38 @@
       </div>
     </div>
   </div>
+
+  <footer>
+    <div class="footerCard">
+      <div class="k">Credits · references</div>
+      <div>© Mehrdad Pajuhaan. Please cite the related preprints:</div>
+      <div class="footerGrid">
+        <div>
+          <div><strong>Emergent Time from the Rω=c Phase Lock</strong></div>
+          <div><a href="https://doi.org/10.5281/zenodo.17977139" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
+               <a href="https://www.researchgate.net/publication/398820447_Emergent_Time_from_the_Ro_c_Phase_Lock" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+        </div>
+
+        <div>
+          <div><strong>Rω=c: Relator Theory Foundation (SR/GR/QM)</strong></div>
+          <div><a href="https://doi.org/10.5281/zenodo.16743276" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
+               <a href="https://www.researchgate.net/publication/396352084_Ro_c_Relator_Theory_Foundation_SRGR_QM" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+        </div>
+
+        <div>
+          <div><strong>Alpha: Emergent The Fine-Structure Constant</strong></div>
+          <div><a href="https://doi.org/10.5281/zenodo.16944532" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
+               <a href="https://www.researchgate.net/publication/396352740_Alpha_-_Emergent_The_Fine-Structure_Constant" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+        </div>
+
+        <div>
+          <div><strong>Emergent Electron Mass from Two-Space Boundary</strong></div>
+          <div><a href="https://doi.org/10.5281/zenodo.17219278" target="_blank" rel="noopener noreferrer">Zenodo DOI</a> ·
+               <a href="https://www.researchgate.net/publication/396387730_Emergent_Electron_Mass_from_Two-Space_Boundary" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 <script>
 /* =========================
@@ -353,6 +424,10 @@ function hexToRgb(hex){
 function rgbToHex(rgb){
   const c = rgb.map(x => clamp(Math.round(x*255),0,255).toString(16).padStart(2,"0"));
   return "#"+c.join("");
+}
+function posKey(ix, iy){
+  // Fast-enough sparse key for infinite lattice occupancy
+  return ix + "," + iy;
 }
 
 /* =========================
@@ -387,6 +462,69 @@ window.addEventListener("resize", resizeCanvases);
 resizeCanvases();
 
 /* =========================
+   Camera (infinite world -> viewport)
+   - World coordinates are on an unbounded integer lattice (simulation).
+   - The on-screen grid is just a window into that lattice.
+========================= */
+let viewSpan = 520;      // world units visible across the canvas at zoom=1
+let camZoom = 1.0;       // >1 zooms in (smaller visible span)
+let camX = 0.0;
+let camY = 0.0;
+
+function viewSpanEffective(){
+  return viewSpan / camZoom;
+}
+function viewHalfW(){
+  return 0.5 * viewSpanEffective();
+}
+function viewHalfH(){
+  const w = uiCanvas.width || 1;
+  const h = uiCanvas.height || 1;
+  return viewHalfW() * (h / w);
+}
+function screenToWorld(px, py){
+  const w = uiCanvas.width || 1;
+  const h = uiCanvas.height || 1;
+  const xN = (px / w) * 2.0 - 1.0;
+  const yN = 1.0 - (py / h) * 2.0;
+  return {
+    x: camX + xN * viewHalfW(),
+    y: camY - yN * viewHalfH(), // world y grows downward
+  };
+}
+function worldToScreen(wx, wy){
+  const w = uiCanvas.width || 1;
+  const h = uiCanvas.height || 1;
+  const xN = (wx - camX) / viewHalfW();
+  const yN = (camY - wy) / viewHalfH();
+  return {
+    x: (0.5 + 0.5 * xN) * w,
+    y: (0.5 - 0.5 * yN) * h,
+  };
+}
+function fitCameraToParticles(){
+  if(particles.length === 0) return;
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  for(const p of particles){
+    minX = Math.min(minX, p.cx);
+    maxX = Math.max(maxX, p.cx);
+    minY = Math.min(minY, p.cy);
+    maxY = Math.max(maxY, p.cy);
+  }
+  const cx = 0.5 * (minX + maxX);
+  const cy = 0.5 * (minY + maxY);
+
+  // Keep the pair distance + ring radius comfortably visible
+  const d = (particles.length >= 2) ? Math.hypot(particles[1].cx - particles[0].cx, particles[1].cy - particles[0].cy) : 240;
+  const r = currentRmax();
+  const spanNeed = Math.max(240, 2.4 * (d + r));
+
+  camX = cx;
+  camY = cy;
+  camZoom = clamp(viewSpan / spanNeed, 0.12, 16.0);
+}
+
+/* =========================
    Shaders
 ========================= */
 const MAX_P = 8;
@@ -395,10 +533,10 @@ const VS = `#version 300 es
 precision highp float;
 precision highp int;
 
-in vec2 aPos;
+in vec2 aPos;     // world position (unbounded lattice)
 in float aPid;
 
-uniform vec2 uGrid;
+uniform vec4 uCam;             // (camX, camY, halfW, halfH)
 uniform vec2 uCenter[${MAX_P}];
 uniform vec3 uGrad0[${MAX_P}];
 uniform vec3 uGrad1[${MAX_P}];
@@ -416,8 +554,13 @@ void main(){
   vec3 col = mix(uGrad0[pid], uGrad1[pid], t);
   vColor = vec4(col, 1.0);
 
-  float x = (aPos.x / (uGrid.x - 1.0)) * 2.0 - 1.0;
-  float y = 1.0 - (aPos.y / (uGrid.y - 1.0)) * 2.0;
+  float camX = uCam.x;
+  float camY = uCam.y;
+  float halfW = uCam.z;
+  float halfH = uCam.w;
+
+  float x = (aPos.x - camX) / halfW;
+  float y = (camY - aPos.y) / halfH; // world y grows downward
 
   gl_Position = vec4(x, y, 0.0, 1.0);
   gl_PointSize = uPointSize;
@@ -463,7 +606,7 @@ gl.useProgram(prog);
 const loc = {
   aPos: gl.getAttribLocation(prog, "aPos"),
   aPid: gl.getAttribLocation(prog, "aPid"),
-  uGrid: gl.getUniformLocation(prog, "uGrid"),
+  uCam: gl.getUniformLocation(prog, "uCam"),
   uRmax: gl.getUniformLocation(prog, "uRmax"),
   uPointSize: gl.getUniformLocation(prog, "uPointSize"),
   uAlpha: gl.getUniformLocation(prog, "uAlpha"),
@@ -484,13 +627,12 @@ gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 /* =========================
    Simulation state
 ========================= */
-let gridN = 520;
 let gridStep = 10;
 let dotsPerParticle = 900;
 let epochRate = 120;
 let pointSize = 2.0;
 
-let running = true;      // ✅ auto-play on load
+let running = true; // auto-play on load
 let epoch = 0;
 
 let centerUpdate = true;
@@ -499,9 +641,15 @@ let showLinks = true;
 let linksMode = "ab";
 let showGrid = true;
 
-const margin = 24;
+// Infinite lattice occupancy (sparse)
+let occMap = new Map();
+
 const ringTol = 1.25;
-const maxStepTry = 4;
+
+// Movement guarantee knobs
+const maxStepTry = 6;
+const relaxRounds = 14;
+const randomFallbackTries = 2500;
 
 const palette = [
   {start:"#0b6623", end:"#ffd60a"}, // A dark green -> yellow
@@ -514,13 +662,20 @@ const palette = [
 
 let particles = [];
 let N = 0;
-let x = null, y = null, pid = null, rDes = null;
-let occ = null;
+
+// Store dot positions as integer lattice coords (can be negative)
+let x = null;     // Int32Array
+let y = null;     // Int32Array
+let pid = null;   // Float32Array (pid per dot for GPU + indexing)
+let rDes = null;  // Float32Array
+
+// GPU staging buffer (reused)
+let posInter = null; // Float32Array(2N)
 
 let movePhi = [], moveR = [];
 
 /* =========================
-   Dynamic distance helpers (fixes undefined constant)
+   Dynamic distance helpers
 ========================= */
 const DEFAULT_DIST = 200;
 
@@ -532,8 +687,8 @@ function currentABDistance(){
   return DEFAULT_DIST;
 }
 function currentRmax(){
-  // allow rings up to about 2× distance, clipped by grid
-  return Math.min(gridN * 0.48, 2.0 * currentABDistance());
+  // Use the same heuristic as before, but now tied to the *visible* span (not a hard boundary).
+  return Math.min(viewSpan * 0.48, 2.0 * currentABDistance());
 }
 
 /* =========================
@@ -542,12 +697,12 @@ function currentRmax(){
 function makeParticle(i){
   const pal = palette[i % palette.length];
   const d = DEFAULT_DIST;
-  const cx = (i===0) ? gridN*0.5 - d*0.5 : (i===1) ? gridN*0.5 + d*0.5 : (gridN*0.5 + (i-1)*60 - 90);
-  const cy = gridN*0.5 + (i%2===0 ? -20 : 20);
+  const cx = (i===0) ? -d*0.5 : (i===1) ? d*0.5 : ((i-1)*60 - 90);
+  const cy = (i===0 || i===1) ? 0 : ((i%2===0 ? -20 : 20));
   return {
     id:i,
-    cx: clamp(cx, margin, gridN-1-margin),
-    cy: clamp(cy, margin, gridN-1-margin),
+    cx: cx,
+    cy: cy,
     spin: +1, // CW default
     grad0: hexToRgb(pal.start),
     grad1: hexToRgb(pal.end),
@@ -609,13 +764,15 @@ function rebuildParticlesUI(){
 
 function allocArrays(){
   N = particles.length * dotsPerParticle;
-  x = new Float32Array(N);
-  y = new Float32Array(N);
+
+  x = new Int32Array(N);
+  y = new Int32Array(N);
   pid = new Float32Array(N);
   rDes = new Float32Array(N);
 
-  occ = new Int32Array(gridN * gridN);
-  occ.fill(-1);
+  posInter = new Float32Array(N*2);
+
+  occMap = new Map();
 
   movePhi = new Int32Array(particles.length);
   moveR = new Int32Array(particles.length);
@@ -628,21 +785,21 @@ function rayleigh(sigma){
 
 function placeDot(dotIndex, p){
   const maxR = currentRmax();
-  const sigma = maxR / 2.4;
+  const sigma = Math.max(8, maxR / 2.4);
 
-  for(let k=0;k<40;k++){
+  for(let k=0;k<120;k++){
     const r = Math.min(maxR, rayleigh(sigma));
     const a = Math.random() * Math.PI * 2;
     const xx = Math.round(p.cx + r*Math.cos(a));
     const yy = Math.round(p.cy + r*Math.sin(a));
-    if(xx<0||yy<0||xx>=gridN||yy>=gridN) continue;
-    const key = yy*gridN + xx;
-    if(occ[key] !== -1) continue;
+    const key = posKey(xx, yy);
+    if(occMap.has(key)) continue;
+
     x[dotIndex] = xx;
     y[dotIndex] = yy;
     pid[dotIndex] = p.id;
     rDes[dotIndex] = r;
-    occ[key] = dotIndex;
+    occMap.set(key, dotIndex);
     return true;
   }
   return false;
@@ -652,45 +809,52 @@ function reseed(){
   epoch = 0;
   allocArrays();
 
-  particles.forEach(p=>{
-    p.cx = clamp(p.cx, margin, gridN-1-margin);
-    p.cy = clamp(p.cy, margin, gridN-1-margin);
-  });
-
+  // Seed dots, ensuring global exclusion on an infinite lattice.
   let k = 0;
   for(const p of particles){
     for(let i=0;i<dotsPerParticle;i++){
       if(!placeDot(k, p)){
-        for(let tries=0;tries<200;tries++){
-          const xx = Math.floor(Math.random()*gridN);
-          const yy = Math.floor(Math.random()*gridN);
-          const key = yy*gridN + xx;
-          if(occ[key]===-1){
-            x[k]=xx; y[k]=yy; pid[k]=p.id; rDes[k]=0;
-            occ[key]=k;
-            break;
-          }
+        // Rare fallback: keep trying random ring points until unique.
+        const maxR = Math.max(40, currentRmax());
+        for(let tries=0;tries<5000;tries++){
+          const a = Math.random() * Math.PI * 2;
+          const r = Math.max(1, Math.random() * maxR);
+          const xx = Math.round(p.cx + r*Math.cos(a));
+          const yy = Math.round(p.cy + r*Math.sin(a));
+          const key = posKey(xx, yy);
+          if(occMap.has(key)) continue;
+          x[k] = xx; y[k] = yy; pid[k] = p.id; rDes[k] = r;
+          occMap.set(key, k);
+          break;
         }
       }
       k++;
     }
   }
+
   rebuildParticlesUI();
   uploadToGPU();
+
+  // Keep the camera sensible after reseed
+  fitCameraToParticles();
 }
 
 /* =========================
    GPU upload
 ========================= */
+function fillPosInter(){
+  for(let i=0;i<N;i++){
+    posInter[i*2]   = x[i];
+    posInter[i*2+1] = y[i];
+  }
+}
+
 function uploadToGPU(){
   gl.bindVertexArray(vao);
 
+  fillPosInter();
+
   gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
-  const posInter = new Float32Array(N*2);
-  for(let i=0;i<N;i++){
-    posInter[i*2] = x[i];
-    posInter[i*2+1] = y[i];
-  }
   gl.bufferData(gl.ARRAY_BUFFER, posInter, gl.DYNAMIC_DRAW);
   gl.enableVertexAttribArray(loc.aPos);
   gl.vertexAttribPointer(loc.aPos, 2, gl.FLOAT, false, 0, 0);
@@ -702,17 +866,13 @@ function uploadToGPU(){
 }
 
 function updatePositionsOnGPU(){
+  fillPosInter();
   gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
-  const posInter = new Float32Array(N*2);
-  for(let i=0;i<N;i++){
-    posInter[i*2] = x[i];
-    posInter[i*2+1] = y[i];
-  }
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, posInter);
 }
 
 /* =========================
-   Epoch update rule
+   Epoch update rule (no stasis + exclusion, guaranteed movement)
 ========================= */
 function domAxisStep(vx, vy){
   const ax = Math.abs(vx), ay = Math.abs(vy);
@@ -721,76 +881,129 @@ function domAxisStep(vx, vy){
   return [0, vy>0 ? 1 : -1];
 }
 
-function withinBand(nx, ny, p, r0){
+function withinBand(nx, ny, p, r0, tol){
   const dx = nx - p.cx, dy = ny - p.cy;
   const rr = Math.sqrt(dx*dx + dy*dy);
-  return (rr >= (r0 - ringTol)) && (rr <= (r0 + ringTol));
+  return (rr >= (r0 - tol)) && (rr <= (r0 + tol));
 }
 
-function tryMove(i, p){
+function tryMoveGuaranteed(i, p){
   const xi = x[i], yi = y[i];
+  const oldKey = posKey(xi, yi);
+
+  // Remove old occupancy first (otherwise we'd block ourselves)
+  occMap.delete(oldKey);
+
   const dx = xi - p.cx, dy = yi - p.cy;
 
-  const f = domAxisStep(p.spin * dy, -p.spin * dx);
-  const rin = domAxisStep(-dx, -dy);
-  const rout = [-rin[0], -rin[1]];
+  const f = domAxisStep(p.spin * dy, -p.spin * dx); // tangential forward (CW/CCW)
+  const rin = domAxisStep(-dx, -dy);                // radial in
+  const rout = [-rin[0], -rin[1]];                  // radial out
 
   const dirs = [
-    {sx:f[0],  sy:f[1],  w:1.0, type:"phi"},
-    {sx:rin[0],sy:rin[1],w:1.0, type:"r"},
+    {sx:f[0],   sy:f[1],   w:1.0, type:"phi"},
+    {sx:rin[0], sy:rin[1], w:1.0, type:"r"},
     {sx:rout[0],sy:rout[1],w:1.0, type:"r"},
   ];
 
-  for(let attempt=0; attempt<6; attempt++){
-    const wsum = dirs[0].w + dirs[1].w + dirs[2].w;
-    let r = Math.random()*wsum;
-    let pick = 0;
-    if(r>dirs[0].w){ r-=dirs[0].w; pick = (r>dirs[1].w) ? 2 : 1; }
+  // Main search: progressively relax tol and step limits until we find a free site.
+  for(let rr=0; rr<relaxRounds; rr++){
+    const tol = ringTol * (1 + 0.40*rr);
+    const maxStep = maxStepTry + rr * 2;
 
-    for(let s=1;s<=maxStepTry;s++){
-      const nx = xi + dirs[pick].sx*s;
-      const ny = yi + dirs[pick].sy*s;
-      if(nx<0||ny<0||nx>=gridN||ny>=gridN) continue;
-      if(!withinBand(nx, ny, p, rDes[i])) continue;
-      const key = ny*gridN + nx;
-      if(occ[key] !== -1) continue;
+    // A few randomized picks among the 3 directions to keep motion "alive"
+    for(let attempt=0; attempt<10; attempt++){
+      // weighted roulette pick among directions
+      const wsum = dirs[0].w + dirs[1].w + dirs[2].w;
+      let r = Math.random() * wsum;
+      let pick = 0;
+      if(r > dirs[0].w){ r -= dirs[0].w; pick = (r > dirs[1].w) ? 2 : 1; }
 
-      const oldKey = yi*gridN + xi;
-      occ[oldKey] = -1;
-      occ[key] = i;
-      x[i] = nx; y[i] = ny;
+      for(let s=1; s<=maxStep; s++){
+        const nx = xi + dirs[pick].sx * s;
+        const ny = yi + dirs[pick].sy * s;
 
-      if(dirs[pick].type==="phi") movePhi[p.id]++; else moveR[p.id]++;
-      return true;
+        if(!withinBand(nx, ny, p, rDes[i], tol)) continue;
+
+        const key = posKey(nx, ny);
+        if(occMap.has(key)) continue;
+
+        // Enforce no-stasis
+        if(nx === xi && ny === yi) continue;
+
+        x[i] = nx; y[i] = ny;
+        occMap.set(key, i);
+
+        if(dirs[pick].type === "phi") movePhi[p.id]++; else moveR[p.id]++;
+        return true;
+      }
+
+      dirs[pick].w *= 0.65;
     }
-    dirs[pick].w *= 0.6;
+
+    // Deterministic sweep (sometimes beats randomness in dense patches)
+    for(const d of dirs){
+      for(let s=1; s<=maxStep; s++){
+        const nx = xi + d.sx * s;
+        const ny = yi + d.sy * s;
+        if(!withinBand(nx, ny, p, rDes[i], tol)) continue;
+        const key = posKey(nx, ny);
+        if(occMap.has(key)) continue;
+        if(nx === xi && ny === yi) continue;
+
+        x[i] = nx; y[i] = ny;
+        occMap.set(key, i);
+
+        if(d.type === "phi") movePhi[p.id]++; else moveR[p.id]++;
+        return true;
+      }
+    }
   }
 
-  const oldKey = yi*gridN + xi;
-  occ[oldKey] = -1;
+  // Random fallback: pick random candidate points on the ring-band until we find a free cell.
+  // This makes "no stasis" effectively unbreakable on an infinite lattice.
+  for(let k=0;k<randomFallbackTries;k++){
+    const tol = ringTol * 8.0;
+    const rr = rDes[i] + (Math.random()*2 - 1) * tol;
+    const ang = Math.random() * Math.PI * 2;
+    const nx = Math.round(p.cx + rr * Math.cos(ang));
+    const ny = Math.round(p.cy + rr * Math.sin(ang));
+    if(nx === xi && ny === yi) continue;
+    const key = posKey(nx, ny);
+    if(occMap.has(key)) continue;
+    x[i] = nx; y[i] = ny;
+    occMap.set(key, i);
+    moveR[p.id]++;
+    return true;
+  }
 
-  const neigh = [
-    [ 1,0],[ -1,0],[0, 1],[0,-1],
-    [ 1,1],[ 1,-1],[-1,1],[-1,-1]
-  ];
-  for(let relax=0; relax<3; relax++){
-    const tol = ringTol * (1 + 0.6*relax);
-    for(const [sx,sy] of neigh){
-      const nx = xi + sx, ny = yi + sy;
-      if(nx<0||ny<0||nx>=gridN||ny>=gridN) continue;
-      const dx2 = nx - p.cx, dy2 = ny - p.cy;
-      const rr = Math.sqrt(dx2*dx2 + dy2*dy2);
-      if(rr < (rDes[i] - tol) || rr > (rDes[i] + tol)) continue;
-      const key = ny*gridN + nx;
-      if(occ[key] !== -1) continue;
-      occ[key] = i;
-      x[i]=nx; y[i]=ny;
+  // Absolute last resort: move anywhere to guarantee "no stasis".
+  // This should be essentially unreachable on an infinite lattice, but we keep it as a hard safety net.
+  for(let step=1; step<=5000; step++){
+    // Spiral-like scan around the old position
+    const cands = [
+      [ xi + step, yi ],
+      [ xi - step, yi ],
+      [ xi, yi + step ],
+      [ xi, yi - step ],
+      [ xi + step, yi + step ],
+      [ xi + step, yi - step ],
+      [ xi - step, yi + step ],
+      [ xi - step, yi - step ],
+    ];
+    for(const [nx, ny] of cands){
+      if(nx === xi && ny === yi) continue;
+      const key = posKey(nx, ny);
+      if(occMap.has(key)) continue;
+      x[i] = nx; y[i] = ny;
+      occMap.set(key, i);
       moveR[p.id]++;
       return true;
     }
   }
 
-  occ[oldKey] = i;
+  // If even that fails (extremely unlikely), restore old position.
+  occMap.set(oldKey, i);
   return false;
 }
 
@@ -811,8 +1024,8 @@ function updateCenters(){
     const id = p.id;
     const cx = sc[id] ? sx[id]/sc[id] : p.cx;
     const cy = sc[id] ? sy[id]/sc[id] : p.cy;
-    p.cx = lerp(p.cx, clamp(cx, margin, gridN-1-margin), centerAlpha);
-    p.cy = lerp(p.cy, clamp(cy, margin, gridN-1-margin), centerAlpha);
+    p.cx = lerp(p.cx, cx, centerAlpha);
+    p.cy = lerp(p.cy, cy, centerAlpha);
   }
 }
 
@@ -826,7 +1039,7 @@ function stepEpoch(){
   for(let k=0;k<N;k++){
     const i = (start + k) % N;
     const p = particles[(pid[i] + 0.5)|0];
-    tryMove(i, p);
+    tryMoveGuaranteed(i, p);
   }
 
   updateCenters();
@@ -842,7 +1055,7 @@ function drawGL(){
 
   gl.useProgram(prog);
 
-  gl.uniform2f(loc.uGrid, gridN, gridN);
+  gl.uniform4f(loc.uCam, camX, camY, viewHalfW(), viewHalfH());
   gl.uniform1f(loc.uRmax, currentRmax());
   gl.uniform1f(loc.uPointSize, pointSize * (window.devicePixelRatio||1));
   gl.uniform1f(loc.uAlpha, 0.84);
@@ -869,19 +1082,32 @@ function drawUI(fps){
   const w = uiCanvas.width, h = uiCanvas.height;
   ctx.clearRect(0,0,w,h);
 
+  const halfW = viewHalfW();
+  const halfH = viewHalfH();
+  const left = camX - halfW;
+  const right = camX + halfW;
+  const top = camY - halfH;
+  const bottom = camY + halfH;
+
   if(showGrid){
     ctx.save();
     ctx.globalAlpha = 0.08;
     ctx.lineWidth = 1;
     ctx.strokeStyle = "#000";
-    const step = gridStep;
-    for(let gx=0; gx<gridN; gx+=step){
-      const px = (gx/(gridN-1))*w;
-      ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+
+    const step = Math.max(1, gridStep);
+    const startX = Math.floor(left / step) * step;
+    const endX = Math.ceil(right / step) * step;
+    for(let gx = startX; gx <= endX; gx += step){
+      const p0 = worldToScreen(gx, camY).x;
+      ctx.beginPath(); ctx.moveTo(p0,0); ctx.lineTo(p0,h); ctx.stroke();
     }
-    for(let gy=0; gy<gridN; gy+=step){
-      const py = (gy/(gridN-1))*h;
-      ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+
+    const startY = Math.floor(top / step) * step;
+    const endY = Math.ceil(bottom / step) * step;
+    for(let gy = startY; gy <= endY; gy += step){
+      const p0 = worldToScreen(camX, gy).y;
+      ctx.beginPath(); ctx.moveTo(0,p0); ctx.lineTo(w,p0); ctx.stroke();
     }
     ctx.restore();
   }
@@ -900,19 +1126,20 @@ function drawUI(fps){
         for(let j=i+1;j<particles.length;j++) pairs.push([i,j]);
       }
     }
+
     for(const [i,j] of pairs){
       const a = particles[i], b = particles[j];
-      const ax = (a.cx/(gridN-1))*w, ay = (a.cy/(gridN-1))*h;
-      const bx = (b.cx/(gridN-1))*w, by = (b.cy/(gridN-1))*h;
-      ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
+      const A = worldToScreen(a.cx, a.cy);
+      const B = worldToScreen(b.cx, b.cy);
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
     }
     ctx.restore();
   }
 
+  // Center markers (A = circle, others = X)
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
-    const px = (p.cx/(gridN-1))*w;
-    const py = (p.cy/(gridN-1))*h;
+    const P = worldToScreen(p.cx, p.cy);
 
     if(i===0){
       ctx.save();
@@ -920,7 +1147,7 @@ function drawUI(fps){
       ctx.fillStyle = "#fff";
       ctx.strokeStyle = "#000";
       ctx.beginPath();
-      ctx.arc(px,py,18,0,Math.PI*2);
+      ctx.arc(P.x,P.y,18,0,Math.PI*2);
       ctx.fill(); ctx.stroke();
       ctx.restore();
     }else{
@@ -929,8 +1156,8 @@ function drawUI(fps){
       ctx.lineWidth = 6;
       const s = 18;
       ctx.beginPath();
-      ctx.moveTo(px-s,py-s); ctx.lineTo(px+s,py+s);
-      ctx.moveTo(px-s,py+s); ctx.lineTo(px+s,py-s);
+      ctx.moveTo(P.x-s,P.y-s); ctx.lineTo(P.x+s,P.y+s);
+      ctx.moveTo(P.x-s,P.y+s); ctx.lineTo(P.x+s,P.y-s);
       ctx.stroke();
       ctx.restore();
     }
@@ -950,7 +1177,7 @@ function drawUI(fps){
   ctx.save();
   ctx.font = "650 18px " + getComputedStyle(document.body).fontFamily;
   ctx.fillStyle = "rgba(0,0,0,.85)";
-  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps`, 18, h-18);
+  ctx.fillText(`epoch ${epoch}   particles ${particles.length}   dots ${dotsPerParticle}   ${fps.toFixed(0)} fps   zoom ${camZoom.toFixed(2)}`, 18, h-18);
   ctx.restore();
 }
 
@@ -972,7 +1199,7 @@ function tick(t){
     acc += dt * epochRate;
     let steps = Math.floor(acc);
     acc -= steps;
-    steps = Math.min(20, steps);
+    steps = Math.min(18, steps);
     for(let k=0;k<steps;k++) stepEpoch();
     updatePositionsOnGPU();
   }
@@ -1000,7 +1227,7 @@ const elGridToggle = document.getElementById("toggleGrid");
 const elGridStep = document.getElementById("gridStep");
 
 function syncUI(){
-  document.getElementById("vGrid").textContent = gridN;
+  document.getElementById("vGrid").textContent = viewSpan;
   document.getElementById("vDots").textContent = dotsPerParticle;
   document.getElementById("vRate").textContent = epochRate;
   document.getElementById("vPoint").textContent = pointSize.toFixed(1);
@@ -1010,9 +1237,7 @@ function syncUI(){
 }
 
 elGrid.addEventListener("input", ()=>{
-  gridN = parseInt(elGrid.value,10);
-  resizeCanvases();
-  reseed();
+  viewSpan = parseInt(elGrid.value,10);
   syncUI();
 });
 elDots.addEventListener("input", ()=>{
@@ -1058,15 +1283,20 @@ document.getElementById("btnReset").addEventListener("click", ()=>{
   reseed();
 });
 document.getElementById("btnRandom").addEventListener("click", ()=>{
+  // Randomize around current camera center, so it stays visible.
+  const span = viewSpanEffective();
   particles.forEach((p)=>{
-    p.cx = clamp(Math.random()*(gridN-1), margin, gridN-1-margin);
-    p.cy = clamp(Math.random()*(gridN-1), margin, gridN-1-margin);
+    p.cx = camX + (Math.random()-0.5) * span * 0.6;
+    p.cy = camY + (Math.random()-0.5) * span * 0.6;
   });
   reseed();
 });
 document.getElementById("btnAdd").addEventListener("click", ()=>{
   if(particles.length >= MAX_P) return;
   const p = makeParticle(particles.length);
+  // place new particle near camera center
+  p.cx = camX + (Math.random()-0.5) * viewSpanEffective() * 0.25;
+  p.cy = camY + (Math.random()-0.5) * viewSpanEffective() * 0.25;
   particles.push(p);
   reseed();
 });
@@ -1077,56 +1307,115 @@ document.getElementById("btnRemove").addEventListener("click", ()=>{
 });
 
 /* =========================
-   Drag centers
+   Mouse wheel zoom (on canvas)
+========================= */
+uiCanvas.addEventListener("wheel", (e)=>{
+  e.preventDefault();
+
+  const rect = uiCanvas.getBoundingClientRect();
+  const dpr = Math.max(1, window.devicePixelRatio||1);
+  const px = (e.clientX - rect.left) * dpr;
+  const py = (e.clientY - rect.top) * dpr;
+
+  const before = screenToWorld(px, py);
+
+  const zoomFactor = Math.exp((-e.deltaY) * 0.0016); // smooth exponential zoom
+  camZoom = clamp(camZoom * zoomFactor, 0.08, 40.0);
+
+  const after = screenToWorld(px, py);
+
+  // Keep the world point under the cursor fixed while zooming
+  camX += (before.x - after.x);
+  camY += (before.y - after.y);
+}, { passive:false });
+
+/* =========================
+   Drag centers + pan background
 ========================= */
 let dragId = -1;
+let panning = false;
+let panStart = null;
+
 function pickCenter(px, py){
-  const w = uiCanvas.width, h = uiCanvas.height;
   for(let i=0;i<particles.length;i++){
     const p = particles[i];
-    const cxp = (p.cx/(gridN-1))*w;
-    const cyp = (p.cy/(gridN-1))*h;
-    const d = Math.hypot(px - cxp, py - cyp);
+    const s = worldToScreen(p.cx, p.cy);
+    const d = Math.hypot(px - s.x, py - s.y);
     if(d < 28) return i;
   }
   return -1;
 }
+
 uiCanvas.addEventListener("pointerdown", (e)=>{
   const rect = uiCanvas.getBoundingClientRect();
   const dpr = Math.max(1, window.devicePixelRatio||1);
   const px = (e.clientX - rect.left) * dpr;
   const py = (e.clientY - rect.top) * dpr;
+
   dragId = pickCenter(px, py);
   if(dragId !== -1){
     uiCanvas.setPointerCapture(e.pointerId);
+    panning = false;
+    panStart = null;
+    return;
   }
+
+  // Otherwise: pan the camera
+  panning = true;
+  panStart = {
+    px, py,
+    camX0: camX,
+    camY0: camY,
+    world0: screenToWorld(px, py),
+  };
+  uiCanvas.setPointerCapture(e.pointerId);
 });
+
 uiCanvas.addEventListener("pointermove", (e)=>{
-  if(dragId === -1) return;
   const rect = uiCanvas.getBoundingClientRect();
   const dpr = Math.max(1, window.devicePixelRatio||1);
   const px = (e.clientX - rect.left) * dpr;
   const py = (e.clientY - rect.top) * dpr;
-  const w = uiCanvas.width, h = uiCanvas.height;
 
-  const gx = (px / w) * (gridN-1);
-  const gy = (py / h) * (gridN-1);
-  particles[dragId].cx = clamp(gx, margin, gridN-1-margin);
-  particles[dragId].cy = clamp(gy, margin, gridN-1-margin);
+  if(dragId !== -1){
+    const w = screenToWorld(px, py);
+    particles[dragId].cx = w.x;
+    particles[dragId].cy = w.y;
+    rebuildParticlesUI();
+    return;
+  }
 
-  rebuildParticlesUI();
+  if(panning && panStart){
+    const wNow = screenToWorld(px, py);
+    camX = panStart.camX0 + (panStart.world0.x - wNow.x);
+    camY = panStart.camY0 + (panStart.world0.y - wNow.y);
+  }
 });
+
 uiCanvas.addEventListener("pointerup", ()=>{
   dragId = -1;
+  panning = false;
+  panStart = null;
+});
+uiCanvas.addEventListener("pointercancel", ()=>{
+  dragId = -1;
+  panning = false;
+  panStart = null;
 });
 
 /* =========================
    Boot (default 2 particles + auto play)
 ========================= */
 function boot(){
-  particles = [makeParticle(0), makeParticle(1)]; // ✅ default 2 particles
+  particles = [makeParticle(0), makeParticle(1)];
   particles[0].spin = +1;
   particles[1].spin = +1;
+
+  // Place the pair around origin and fit camera
+  particles[0].cx = -DEFAULT_DIST * 0.5; particles[0].cy = 0;
+  particles[1].cx =  DEFAULT_DIST * 0.5; particles[1].cy = 0;
+
+  camX = 0; camY = 0; camZoom = 1.0;
 
   reseed();
 
@@ -1136,7 +1425,6 @@ function boot(){
   linksMode = "ab";
   showGrid = true;
 
-  // ✅ auto-play
   running = true;
   document.getElementById("btnPlay").textContent = "Pause";
 
