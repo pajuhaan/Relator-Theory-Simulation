@@ -5,7 +5,7 @@ import { createGLRenderer } from "./renderer_gl.js";
 import { createOverlayRenderer } from "./renderer_ui.js";
 import { initControls } from "./ui_controls.js";
 import { bindStageInput } from "./input.js";
-import { makeParticle, reseed, stepEpoch, gaussianizeParticle } from "./process.js";
+import { makeParticle, reseed, stepEpoch, gaussianizeParticle, collarizeParticle } from "./process.js";
 
 function getDom(){
   return {
@@ -15,6 +15,7 @@ function getDom(){
     hud: document.getElementById("hud"),
 
     btnPlay: document.getElementById("btnPlay"),
+    btnStep: document.getElementById("btnStep"),
     btnReset: document.getElementById("btnReset"),
     btnRandom: document.getElementById("btnRandom"),
     btnAdd: document.getElementById("btnAdd"),
@@ -45,6 +46,25 @@ function getDom(){
     particlesRoot: document.getElementById("particles"),
     darkToggle: document.getElementById("darkToggle"),
   };
+}
+
+function ensureNextEpochButton(dom){
+  if(dom.btnStep) return;
+
+  const btn = document.createElement("button");
+  btn.className = "btn";
+  btn.id = "btnStep";
+  btn.textContent = "Next epoch";
+
+  if(dom.btnReset && dom.btnReset.parentElement){
+    dom.btnReset.insertAdjacentElement("beforebegin", btn);
+  } else if(dom.btnPlay && dom.btnPlay.parentElement){
+    dom.btnPlay.insertAdjacentElement("afterend", btn);
+  } else {
+    document.body.appendChild(btn);
+  }
+
+  dom.btnStep = btn;
 }
 
 function resizeAll(dom, glRenderer){
@@ -106,6 +126,7 @@ function bootParticles(state){
 
 function main(){
   const dom = getDom();
+  ensureNextEpochButton(dom);
 
   const themeCtrl = createThemeController({ darkToggleEl: dom.darkToggle });
   themeCtrl.init();
@@ -129,6 +150,11 @@ function main(){
 
     gaussianizeParticle(idx){
       gaussianizeParticle(state, idx);
+      glRenderer.updatePositions(state);
+    },
+
+    collarizeParticle(idx){
+      collarizeParticle(state, idx);
       glRenderer.updatePositions(state);
     },
 
@@ -159,6 +185,21 @@ function main(){
 
   const ui = initControls(state, dom, actions);
   bindStageInput(state, dom, actions);
+
+  // Next epoch (single step)
+  dom.btnStep.addEventListener("click", ()=>{
+    state.runtime.running = false;
+    state.runtime.acc = 0;
+
+    stepEpoch(state);
+    glRenderer.updatePositions(state);
+
+    glRenderer.draw(state);
+    overlay.draw(state, state.runtime.fpsSmooth);
+    dom.hud.textContent = `epoch ${state.runtime.epoch} · ${state.runtime.fpsSmooth.toFixed(0)} fps`;
+
+    ui.sync();
+  });
 
   function onResize(){
     resizeAll(dom, glRenderer);

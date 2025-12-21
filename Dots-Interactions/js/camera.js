@@ -22,21 +22,35 @@ export function viewW(camera, glCanvas){
 
 export function worldToScreen(camera, glCanvas, wx, wy){
   const vw = viewW(camera, glCanvas);
+
+  // Match the shader convention:
+  // nx = (x - camX) / (viewW/2)
+  // ny = - (y - camY) / (viewH/2)
   const nx = (wx - camera.camX) / (vw * 0.5);
   const ny = - (wy - camera.camY) / (camera.viewH * 0.5);
 
-  const sx = (nx*0.5 + 0.5) * glCanvas.width;
-  const sy = (1.0 - (ny*0.5 + 0.5)) * glCanvas.height;
+  // NDC -> screen pixels
+  const sx = (nx * 0.5 + 0.5) * glCanvas.width;
+  const sy = (1.0 - (ny * 0.5 + 0.5)) * glCanvas.height;
   return [sx, sy];
 }
 
 export function screenToWorld(camera, glCanvas, sx, sy){
+  // screen pixels -> NDC
   const nx = (sx / glCanvas.width) * 2.0 - 1.0;
+
+  // ndc_y = 1 - 2*(sy/height)
   const ny = -((sy / glCanvas.height) * 2.0 - 1.0);
 
   const vw = viewW(camera, glCanvas);
+
+  // Inverse of nx mapping
   const wx = camera.camX + nx * (vw * 0.5);
-  const wy = camera.camY + ny * (camera.viewH * 0.5);
+
+  // IMPORTANT FIX
+  // Inverse of: ny = -(wy - camY)/(viewH/2)  =>  wy = camY - ny*(viewH/2)
+  const wy = camera.camY - ny * (camera.viewH * 0.5);
+
   return [wx, wy];
 }
 

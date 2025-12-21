@@ -41,9 +41,10 @@ export function initControls(state, dom, actions){
               <input type="checkbox" ${p.spin===1?"checked":""} data-spin="${i}">
               CW
             </label>
-            <button class="btn" style="padding:6px 10px; border-radius:10px; font-size:12px;" data-gauss="${i}">
-              Gaussianize
-            </button>
+            <div style="display:flex; gap:8px;">
+              <button class="btn" style="padding:6px 10px; border-radius:10px; font-size:12px;" data-gauss="${i}">Gaussianize</button>
+              <button class="btn" style="padding:6px 10px; border-radius:10px; font-size:12px;" data-collar="${i}">Collar</button>
+            </div>
           </div>
         </div>
 
@@ -104,11 +105,18 @@ export function initControls(state, dom, actions){
       });
     });
 
-    // NEW: Gaussianize button per particle
     root.querySelectorAll('button[data-gauss]').forEach(btn=>{
       btn.addEventListener("click", (e)=>{
         const idx = parseInt(e.target.getAttribute("data-gauss"), 10);
         actions.gaussianizeParticle(idx);
+        renderParticlesPanel();
+      });
+    });
+
+    root.querySelectorAll('button[data-collar]').forEach(btn=>{
+      btn.addEventListener("click", (e)=>{
+        const idx = parseInt(e.target.getAttribute("data-collar"), 10);
+        actions.collarizeParticle(idx);
         renderParticlesPanel();
       });
     });
@@ -165,7 +173,6 @@ export function initControls(state, dom, actions){
     sync();
   });
 
-  // Buttons
   dom.btnPlay.addEventListener("click", ()=>{
     state.runtime.running = !state.runtime.running;
     sync();
